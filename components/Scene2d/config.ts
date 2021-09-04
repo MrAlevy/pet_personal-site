@@ -1,0 +1,10 @@
+export const CANVAS_HEIGHT = 160
+export const DISPLACEMENT_Y = 30
+export const FONT_SIZE = 27
+export const FONT = `bold ${FONT_SIZE}px Verdana`
+export const LETTER_SCALE = 3
+export const PARTICLE_SIZE = 3.3
+export const PARTICLE_COLOR = 'darkblue'
+export const ALPHA_MIN = 160
+export const SPEED_FACTOR = 5
+export const CURSOR_IMPACT_RADIUS = 60
