@@ -18,10 +18,24 @@ const Home: NextPage = () => {
       <div
         className='w-full h-full'
         style={{
-          backgroundColor: 'blueviolet',
+          backgroundColor: 'darkviolet',
         }}
       >
         <Scene2d />
+        {/* <div
+          style={{
+            color: 'blue',
+            font: `bold 27px Verdana`,
+            position: 'absolute',
+            top: '150px',
+            fontSize: '78px',
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+          }}
+        >
+          hello there!
+        </div> */}
         <Scene3d />
       </div>
 
