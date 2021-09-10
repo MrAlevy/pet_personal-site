@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import useContext from '../Context/useContext'
 import { CANVAS_HEIGHT, CANVAS_ID, FONT, FONT_SIZE } from './config'
 import Particle from './Particle'
 import { Blink, Cursor, Effects, EffectsActivity } from './types'
@@ -10,6 +11,8 @@ import {
 } from './utils'
 
 export default function Scene2d() {
+  const { context } = useContext()
+
   const text = 'hello there!'
 
   const isUnmount = {
@@ -34,7 +37,7 @@ export default function Scene2d() {
     // Effects activity
     const effectsActivity: EffectsActivity = {
       connections: false,
-      blink: true,
+      blink: !context.isLaptopOpened,
     }
 
     // For blink effect

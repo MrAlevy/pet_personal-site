@@ -88,7 +88,9 @@ export const effectBlink = (
     cursor.y = blink.blinkY
     if (blink.blinkX > width + 100) {
       blink.isActive = false
-      effectsActivity.connections = false
+      setTimeout(() => {
+        effectsActivity.connections = false
+      }, Math.random() * BLINK_TIMEOUT)
       setTimeout(() => {
         blink.blinkX = 0
         if (cursor.x && cursor.x > width) cursor.x = undefined

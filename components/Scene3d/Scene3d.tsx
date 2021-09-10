@@ -12,8 +12,12 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
 import { Laptop } from './Laptop'
 import Textq from './FlyingText'
+import useContext from '../Context/useContext'
 
 export default function Scene3d() {
+  const context = useContext()
+  // dispatch({type: action('TOGGLE_LAPTOP_OPENED')})
+
   return (
     <Canvas
       dpr={[1, 2]}
@@ -29,7 +33,7 @@ export default function Scene3d() {
       </PerspectiveCamera>
       {/* <pointLight position={[-5, 3, -2]} intensity={3.5} color='blue' /> */}
       <Suspense fallback={null}>
-        <Laptop />
+        <Laptop context={context} />
         {/* <Textq /> */}
       </Suspense>
       <ContactShadows

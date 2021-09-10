@@ -19,10 +19,12 @@ import * as THREE from 'three'
 import { useSpring, animated, config, to } from '@react-spring/three'
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-
+import { Actions } from '../Context/Context'
 //TODO: gui to DEV DEPS remove
 
 export function Laptop(props) {
+  const { context, dispatch } = props.context
+
   const group = useRef()
 
   const meshRef = useRef()
@@ -76,7 +78,16 @@ export function Laptop(props) {
   useHelper(light2ref, THREE.SpotLightHelper, 'orange')
   useHelper(light3ref, THREE.SpotLightHelper, 'orange')
 
-  const [open, setOpen] = React.useState(false)
+  // const [open, setOpen] = React.useState(false) TODO:
+  console.log(context.isLaptopOpened)
+  let open = context.isLaptopOpened //scene.toggleIsLaptopOpened
+
+  // console.log({ scene3dOpened: open })
+  // const setOpen = () => {
+  //   console.log(open)
+  //   scene.toggleIsLaptopOpened()
+  // }
+
   const [wasOpened, setWasOpened] = React.useState(false)
   const [hovered, setHovered] = useState(false)
   useEffect(
@@ -171,7 +182,10 @@ export function Laptop(props) {
       <group
         onClick={e => {
           e.stopPropagation()
-          if (!open) setOpen(true)
+          if (!open)
+            dispatch({
+              type: Actions.TOGGLE_LAPTOP_OPENED,
+            })
         }}
       >
         <mesh
@@ -184,7 +198,9 @@ export function Laptop(props) {
           onPointerOut={e => setHovered(false)}
           onClick={e => {
             e.stopPropagation()
-            setOpen(!open)
+            dispatch({
+              type: Actions.TOGGLE_LAPTOP_OPENED,
+            })
           }}
         />
         <animated.mesh

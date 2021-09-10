@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import React from 'react'
 import Scene2d from '../components/Scene2d/Scene2d'
 import Scene3d from '../components/Scene3d/Scene3d'
-import React from 'react'
 
 const Home: NextPage = () => {
   return (

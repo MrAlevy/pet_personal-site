@@ -29,5 +29,5 @@ export const CONNECTION_COLOR_2 = 'rgba(30,20,200,1)'
 export const CONNECTION_COLOR_3 = 'rgba(255,255,255,1)'
 
 // Effect - blink
-export const BLINK_MULTIPLE = 10
+export const BLINK_MULTIPLE = 30
 export const BLINK_TIMEOUT = 500
