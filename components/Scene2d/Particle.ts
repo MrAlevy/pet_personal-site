@@ -48,10 +48,10 @@ export default class Particle {
       // Random movement
       const randomFactor = Math.random() > RANDOM_FACTOR ? -1 : 1
 
-      const coefficient = slowFactor * randomFactor * this.speedFactor
+      const movingCoefficient = slowFactor * randomFactor * this.speedFactor
 
-      this.x -= forceDirectionX * coefficient
-      this.y -= forceDirectionY * coefficient
+      this.x -= forceDirectionX * movingCoefficient
+      this.y -= forceDirectionY * movingCoefficient
     }
 
     // Compression

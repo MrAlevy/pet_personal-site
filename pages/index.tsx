@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Scene2d from '../components/Scene2d/Scene2d'
 import Scene3d from '../components/Scene3d/Scene3d'
+import React from 'react'
 
 const Home: NextPage = () => {
   return (
@@ -39,18 +40,17 @@ const Home: NextPage = () => {
         <Scene3d />
       </div>
 
-      {/* <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <footer
+        className='absolute bottom-0 h-12 w-full
+        flex justify-center align-middle '
+      >
+        <div
+          className='flex justify-center w-3/5 align-middle
+          border-t border-gray-50 border-opacity-25'
         >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer> */}
+          <div className='opacity-60'>Alexander Vygodchikov</div>
+        </div>
+      </footer>
     </div>
   )
 }

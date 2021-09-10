@@ -1,5 +1,7 @@
 import {
   ALPHA_MIN,
+  BLINK_MULTIPLE,
+  BLINK_TIMEOUT,
   CONNECTION_COLOR_1,
   CONNECTION_COLOR_2,
   CONNECTION_COLOR_3,
@@ -13,7 +15,7 @@ import {
   PARTICLE_SIZE,
 } from './config'
 import Particle from './Particle'
-import { Cursor } from './types'
+import { Blink, Cursor, Effects, EffectsActivity } from './types'
 
 export const makeParticles = (imageData: ImageData, canvasWidth: number) => {
   const particleArray = []
@@ -39,43 +41,58 @@ export const makeParticles = (imageData: ImageData, canvasWidth: number) => {
 
 export const animateParticles = (
   ctx: CanvasRenderingContext2D,
-  particleArray: Particle[],
+  particleArray: { particles: Particle[] },
   cursor: Cursor,
-  effects?: (() => void)[]
+  effectsActivity: EffectsActivity,
+  isUnmount: { value: boolean },
+  effects?: { title: Effects; effect: () => void }[]
 ) => {
+  if (isUnmount?.value) return
+
   ctx.clearRect(0, 0, innerWidth, innerHeight)
 
-  effects && effects.forEach(effect => effect())
+  effects?.forEach(effect => effectsActivity[effect.title] && effect.effect())
 
-  particleArray.forEach(particle => {
+  particleArray.particles.forEach(particle => {
     particle.update(cursor)
     particle.draw(ctx)
   })
 
   requestAnimationFrame(() =>
-    animateParticles(ctx, particleArray, cursor, effects)
+    animateParticles(
+      ctx,
+      particleArray,
+      cursor,
+      effectsActivity,
+      isUnmount,
+      effects
+    )
   )
 }
 
 export const effectBlink = (
-  blink: any, //TODO:
+  blink: Blink,
   cursor: Cursor,
-  width: number
+  width: number,
+  effectsActivity: EffectsActivity
 ) => {
-  blink.timer += 1 // TODO: %300(3000) %10(500)
-  if (blink.timer % 10 === 0) blink.isActive = true
+  blink.timer += 1
+  if (blink.timer > 50 && blink.timer % BLINK_MULTIPLE === 0) {
+    blink.isActive = true
+    effectsActivity.connections = true
+  }
   if (blink.isActive) {
     const randomBack = Math.random() < 0.8 ? 1 : -2
-    // const randomStop = Math.random() < 0.8 ? 1 : 0
     blink.blinkX += randomBack * 50 * (Math.random() * 1.5 + 1)
     cursor.x = blink.blinkX
     cursor.y = blink.blinkY
     if (blink.blinkX > width + 100) {
       blink.isActive = false
+      effectsActivity.connections = false
       setTimeout(() => {
         blink.blinkX = 0
         if (cursor.x && cursor.x > width) cursor.x = undefined
-      }, 500)
+      }, BLINK_TIMEOUT)
     }
   }
 }
@@ -91,11 +108,11 @@ export const effectConnections = (
 
   for (let a = 0; a < particleArray.length; a++) {
     for (let b = a; b < particleArray.length; b++) {
-      // Distance to other particles
-      const distance = Math.hypot(
-        particleArray[a].x - particleArray[b].x,
-        particleArray[a].y - particleArray[b].y
-      )
+      // Distance to other particles - do not use Math.hypot - optimization issues
+      const dx = particleArray[a].x - particleArray[b].x
+      const dy = particleArray[a].y - particleArray[b].y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+
       const isDistanceOK =
         distance > CONNECTION_DISTANCE_MIN && distance < CONNECTION_DISTANCE_MAX
       const isNotAtBase = particleArray[a].baseX !== particleArray[a].x
@@ -103,10 +120,11 @@ export const effectConnections = (
       // Draw connection line
       if (isDistanceOK && isNotAtBase) {
         const opacity = distance / CONNECTION_OPACITY_FACTOR
-        const distanceToCursor = Math.hypot(
-          cursor.x - particleArray[a].x,
-          cursor.y - particleArray[a].y
-        )
+
+        const dx = cursor.x - particleArray[a].x
+        const dy = cursor.y - particleArray[a].y
+        const distanceToCursor = Math.sqrt(dx * dx + dy * dy)
+
         const modifyColor = (color: `rgba(${number},${number},${number},1)`) =>
           color.replace('1)', `${opacity})`)
 
@@ -127,13 +145,4 @@ export const effectConnections = (
       }
     }
   }
-}
-
-export const mouseMoveHandler = (
-  canvas: HTMLCanvasElement,
-  event: MouseEvent,
-  cursor: Cursor
-) => {
-  cursor.x = event.x + canvas.clientLeft / 2
-  cursor.y = event.y + canvas.clientTop / 2
 }

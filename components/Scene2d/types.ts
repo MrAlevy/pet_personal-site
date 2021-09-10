@@ -9,3 +9,10 @@ export interface Blink {
   blinkX: number
   blinkY: number
 }
+
+export enum Effects {
+  CONNECTIONS = 'connections',
+  BLINK = 'blink',
+}
+
+export type EffectsActivity = Record<Effects, boolean>

@@ -15,7 +15,7 @@ export const ALPHA_MIN = 160
 
 // Animation
 export const EXTENSION_ACCELERATION = 3.5
-export const COMPRESSION_ACCELERATION = 0.8
+export const COMPRESSION_ACCELERATION = 0.5
 export const RANDOM_FACTOR = 0.9
 export const CURSOR_IMPACT_RADIUS = 60
 
@@ -28,6 +28,6 @@ export const CONNECTION_COLOR_1 = 'rgba(255,255,0,1)'
 export const CONNECTION_COLOR_2 = 'rgba(30,20,200,1)'
 export const CONNECTION_COLOR_3 = 'rgba(255,255,255,1)'
 
-// export const CONNECTION_COLOR_3 = 'rgba(255,255,0,1)'
-// export const CONNECTION_COLOR_2 = 'rgba(255,230,0,1)'
-// export const CONNECTION_COLOR_1 = 'rgba(155,155,255,1)'
+// Effect - blink
+export const BLINK_MULTIPLE = 10
+export const BLINK_TIMEOUT = 500
