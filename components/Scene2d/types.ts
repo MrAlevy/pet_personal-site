@@ -4,8 +4,9 @@ export interface Cursor {
 }
 
 export interface Blink {
-  timer: number
+  _isActive: boolean
   isActive: boolean
+  timer: number
   blinkX: number
   blinkY: number
 }

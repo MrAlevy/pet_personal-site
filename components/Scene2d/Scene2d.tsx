@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
+import { Actions } from '../Context/Context'
 import useContext from '../Context/useContext'
 import { CANVAS_HEIGHT, CANVAS_ID, FONT, FONT_SIZE } from './config'
 import Particle from './Particle'
@@ -10,9 +11,19 @@ import {
   makeParticles,
 } from './utils'
 
-export default function Scene2d() {
-  const { context } = useContext()
+export default function Scene2() {
+  const { context, dispatch } = useContext()
+  //eslint-disable-next-line react-hooks/exhaustive-deps
+  const dispatchCallback = useCallback(dispatch, [])
+  return (
+    <Scene2dMemo
+      isLaptopOpened={context.isLaptopOpened}
+      dispatch={dispatchCallback}
+    />
+  )
+}
 
+const Scene2dMemo = React.memo(({ isLaptopOpened, dispatch }: any) => {
   const text = 'hello there!'
 
   const isUnmount = {
@@ -24,6 +35,7 @@ export default function Scene2d() {
   }
 
   useEffect(() => {
+    console.log('rerender')
     // Get canvas
     let canvas = document.querySelector(`#${CANVAS_ID}`) as HTMLCanvasElement
     const ctx = canvas?.getContext('2d')
@@ -37,15 +49,23 @@ export default function Scene2d() {
     // Effects activity
     const effectsActivity: EffectsActivity = {
       connections: false,
-      blink: !context.isLaptopOpened,
+      blink: !isLaptopOpened,
     }
 
     // For blink effect
     const blink: Blink = {
+      _isActive: false,
       timer: 0,
-      isActive: false,
       blinkX: 0,
       blinkY: CANVAS_HEIGHT / 2,
+
+      set isActive(val: boolean) {
+        dispatch({ type: Actions.SET_BLINKING, payload: val })
+        this._isActive = val
+      },
+      get isActive() {
+        return this._isActive
+      },
     }
 
     // For connections effect
@@ -53,6 +73,9 @@ export default function Scene2d() {
       x: undefined,
       y: undefined,
     }
+
+    let connectionsTimeOutID: ReturnType<typeof setTimeout> | undefined =
+      undefined
 
     // Print text and capture an area with it
     ctx.font = FONT
@@ -92,9 +115,10 @@ export default function Scene2d() {
     const mousemoveCanvas = () => {
       blink.timer = 0
       effectsActivity.connections = true
+      connectionsTimeOutID && clearTimeout(connectionsTimeOutID)
     }
     const mouseleaveCanvas = () => {
-      setTimeout(() => {
+      connectionsTimeOutID = setTimeout(() => {
         effectsActivity.connections = false
       }, 3000)
     }
@@ -125,7 +149,9 @@ export default function Scene2d() {
       }}
     />
   )
-}
+})
+
+Scene2dMemo.displayName = 'Scene2d'
 
 //TODO: animating words changing
 //TODO: make scale factor for screen size

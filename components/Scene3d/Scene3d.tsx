@@ -16,7 +16,6 @@ import useContext from '../Context/useContext'
 
 export default function Scene3d() {
   const context = useContext()
-  // dispatch({type: action('TOGGLE_LAPTOP_OPENED')})
 
   return (
     <Canvas

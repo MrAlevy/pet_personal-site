@@ -79,7 +79,6 @@ export function Laptop(props) {
   useHelper(light3ref, THREE.SpotLightHelper, 'orange')
 
   // const [open, setOpen] = React.useState(false) TODO:
-  console.log(context.isLaptopOpened)
   let open = context.isLaptopOpened //scene.toggleIsLaptopOpened
 
   // console.log({ scene3dOpened: open })

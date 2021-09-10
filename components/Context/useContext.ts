@@ -5,6 +5,7 @@ export default function useContextCustomHook() {
   const dispatch = useContext(DispatchContext)
   return {
     context: useContext(Context),
-    dispatch: (action: { type: Actions }) => dispatch && dispatch(action),
+    dispatch: (action: { type: Actions; payload?: any }) =>
+      dispatch && dispatch(action),
   }
 }
