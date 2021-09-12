@@ -1,13 +1,20 @@
 import React, { useCallback, useEffect } from 'react'
 import { Actions } from '../Context/Context'
 import useContext from '../Context/useContext'
-import { CANVAS_HEIGHT, CANVAS_ID, FONT, FONT_SIZE } from './config'
+import {
+  CANVAS_HEIGHT,
+  CANVAS_ID,
+  FONT,
+  FONT_SIZE,
+  LETTER_SCALE,
+} from './config'
 import Particle from './Particle'
 import { Blink, Cursor, Effects, EffectsActivity } from './types'
 import {
   animateParticles,
   effectBlink,
   effectConnections,
+  getTextStartPoint,
   makeParticles,
 } from './utils'
 
@@ -15,15 +22,26 @@ export default function Scene2() {
   const { context, dispatch } = useContext()
   //eslint-disable-next-line react-hooks/exhaustive-deps
   const dispatchCallback = useCallback(dispatch, [])
+
   return (
-    <Scene2dMemo
+    <Scene2dMemo<typeof dispatch>
       isLaptopOpened={context.isLaptopOpened}
       dispatch={dispatchCallback}
     />
   )
 }
 
-const Scene2dMemo = React.memo(({ isLaptopOpened, dispatch }: any) => {
+const Scene2dMemo = React.memo(Scene2Generic) as typeof Scene2Generic
+
+interface Props<TDispatch> {
+  isLaptopOpened: boolean
+  dispatch: TDispatch
+}
+
+function Scene2Generic<TDispatch extends Function>({
+  isLaptopOpened,
+  dispatch,
+}: Props<TDispatch>) {
   const text = 'hello there!'
 
   const isUnmount = {
@@ -52,31 +70,6 @@ const Scene2dMemo = React.memo(({ isLaptopOpened, dispatch }: any) => {
       blink: !isLaptopOpened,
     }
 
-    // For blink effect
-    const blink: Blink = {
-      _isActive: false,
-      timer: 0,
-      blinkX: 0,
-      blinkY: CANVAS_HEIGHT / 2,
-
-      set isActive(val: boolean) {
-        dispatch({ type: Actions.SET_BLINKING, payload: val })
-        this._isActive = val
-      },
-      get isActive() {
-        return this._isActive
-      },
-    }
-
-    // For connections effect
-    const cursor: Cursor = {
-      x: undefined,
-      y: undefined,
-    }
-
-    let connectionsTimeOutID: ReturnType<typeof setTimeout> | undefined =
-      undefined
-
     // Print text and capture an area with it
     ctx.font = FONT
     ctx.fillText(text, 0, FONT_SIZE)
@@ -88,14 +81,50 @@ const Scene2dMemo = React.memo(({ isLaptopOpened, dispatch }: any) => {
     ]
     const imageData = ctx.getImageData(...textBoundingBox)
 
+    // Find start 'x' coord - center align
+    const displacementX = getTextStartPoint(canvas.width, imageData.width)
+
     // Make particle array
-    particleArray.particles = makeParticles(imageData, canvas.width)
+    particleArray.particles = makeParticles(imageData, displacementX)
+
+    // Sets for blink effect
+    const blink: Blink = {
+      _isActive: false,
+      timer: 0,
+      blinkX: displacementX,
+      blinkY: CANVAS_HEIGHT / 2,
+      set isActive(isActive: boolean) {
+        dispatch({
+          type: Actions.SET_BLINKING,
+          payload: isActive,
+        })
+        this._isActive = isActive
+      },
+      get isActive() {
+        return this._isActive
+      },
+    }
+
+    // Sets for connections effect
+    const cursor: Cursor = {
+      x: undefined,
+      y: undefined,
+    }
+    let connectionsTimeOutID: ReturnType<typeof setTimeout> | undefined =
+      undefined
 
     // Animate particle array
     animateParticles(ctx, particleArray, cursor, effectsActivity, isUnmount, [
       {
         title: Effects.BLINK,
-        effect: () => effectBlink(blink, cursor, canvas.width, effectsActivity),
+        effect: () =>
+          effectBlink(
+            blink,
+            cursor,
+            effectsActivity,
+            displacementX,
+            displacementX + imageData.width * LETTER_SCALE
+          ),
       },
       {
         title: Effects.CONNECTIONS,
@@ -103,10 +132,12 @@ const Scene2dMemo = React.memo(({ isLaptopOpened, dispatch }: any) => {
       },
     ])
 
-    // Listeners
+    // Event listeners
     const resize = () => {
       canvas.width = window.innerWidth
-      particleArray.particles = makeParticles(imageData, canvas.width)
+      const displacementX = getTextStartPoint(canvas.width, imageData.width)
+      blink.blinkX = displacementX
+      particleArray.particles = makeParticles(imageData, displacementX)
     }
     const mousemove = (e: MouseEvent) => {
       cursor.x = e.x + canvas.clientLeft / 2
@@ -129,13 +160,13 @@ const Scene2dMemo = React.memo(({ isLaptopOpened, dispatch }: any) => {
     canvas.addEventListener('mouseleave', mouseleaveCanvas)
 
     return () => {
-      // To prevent memory leak from recursive animation function
-      isUnmount.value = true
-
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', mousemove)
       canvas.removeEventListener('mousemove', mousemoveCanvas)
       canvas.removeEventListener('mouseleave', mouseleaveCanvas)
+
+      // To prevent memory leak from recursive animation function
+      isUnmount.value = true
     }
   })
 
@@ -149,9 +180,7 @@ const Scene2dMemo = React.memo(({ isLaptopOpened, dispatch }: any) => {
       }}
     />
   )
-})
-
-Scene2dMemo.displayName = 'Scene2d'
+}
 
 //TODO: animating words changing
 //TODO: make scale factor for screen size

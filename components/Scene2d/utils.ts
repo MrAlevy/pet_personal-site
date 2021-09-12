@@ -17,16 +17,14 @@ import {
 import Particle from './Particle'
 import { Blink, Cursor, Effects, EffectsActivity } from './types'
 
-export const makeParticles = (imageData: ImageData, canvasWidth: number) => {
+export const makeParticles = (imageData: ImageData, xStart: number) => {
   const particleArray = []
-  // Center align
-  const displacementX = canvasWidth / 2 - (imageData.width * LETTER_SCALE) / 2
   // Look on each pixel and create particles for those of which the condition of the minimum opacity ALPHA_MIN is satisfied
   // Each pixel represents by four elements in an array in an rgba format - alpha is each fourth value
   for (let y = 0; y < imageData.height; y++) {
     for (let x = 0; x < imageData.width; x++) {
       if (imageData.data[y * 4 * imageData.width + x * 4 + 3] > ALPHA_MIN) {
-        const positionX = x * LETTER_SCALE + displacementX
+        const positionX = x * LETTER_SCALE + xStart
         const positionY = y * LETTER_SCALE + DISPLACEMENT_Y
         particleArray.push(new Particle(positionX, positionY))
       }
@@ -73,8 +71,9 @@ export const animateParticles = (
 export const effectBlink = (
   blink: Blink,
   cursor: Cursor,
-  width: number,
-  effectsActivity: EffectsActivity
+  effectsActivity: EffectsActivity,
+  xStart: number,
+  xEnd: number
 ) => {
   blink.timer += 1
   if (blink.timer > 50 && blink.timer % BLINK_MULTIPLE === 0) {
@@ -86,14 +85,14 @@ export const effectBlink = (
     blink.blinkX += randomBack * 50 * (Math.random() * 1.5 + 1)
     cursor.x = blink.blinkX
     cursor.y = blink.blinkY
-    if (blink.blinkX > width + 100) {
+    if (blink.blinkX > xEnd + 20) {
       blink.isActive = false
       setTimeout(() => {
         effectsActivity.connections = false
       }, Math.random() * BLINK_TIMEOUT)
       setTimeout(() => {
-        blink.blinkX = 0
-        if (cursor.x && cursor.x > width) cursor.x = undefined
+        blink.blinkX = xStart - 20
+        if (cursor.x && cursor.x > xEnd + 20) cursor.x = undefined
       }, BLINK_TIMEOUT)
     }
   }
@@ -148,3 +147,12 @@ export const effectConnections = (
     }
   }
 }
+
+/**
+ * UTILS
+ */
+
+export const getTextStartPoint = (
+  canvasWidth: number,
+  imageDataWidth: number
+) => canvasWidth / 2 - (imageDataWidth * LETTER_SCALE) / 2
