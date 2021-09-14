@@ -1,5 +1,10 @@
 import { createContext, Dispatch, ReactNode, useReducer } from 'react'
 
+export type ActionType = {
+  type: Actions
+  payload?: any
+}
+
 export enum Actions {
   TOGGLE_LAPTOP_OPENED,
   SET_BLINKING,
@@ -10,15 +15,7 @@ const initialState = {
   isBlinking: false,
 }
 
-export const Context = createContext<typeof initialState>(initialState)
-export const DispatchContext = createContext<
-  Dispatch<{ type: Actions }> | undefined
->(undefined)
-
-const reducer = (
-  state: typeof initialState,
-  action: { type: Actions; payload?: any }
-) => {
+const reducer = (state: typeof initialState, action: ActionType) => {
   switch (action.type) {
     case Actions.TOGGLE_LAPTOP_OPENED:
       return { ...state, isLaptopOpened: !state.isLaptopOpened }
@@ -29,9 +26,14 @@ const reducer = (
   }
 }
 
+export const Context = createContext<typeof initialState>(initialState)
+
+export const DispatchContext = createContext<Dispatch<ActionType> | undefined>(
+  undefined
+)
+
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-
   return (
     <DispatchContext.Provider value={dispatch}>
       <Context.Provider value={state}>{children}</Context.Provider>

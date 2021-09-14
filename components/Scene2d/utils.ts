@@ -11,21 +11,24 @@ import {
   CONNECTION_WIDTH,
   CURSOR_IMPACT_RADIUS,
   DISPLACEMENT_Y,
-  LETTER_SCALE,
   PARTICLE_SIZE,
 } from './config'
 import Particle from './Particle'
 import { Blink, Cursor, Effects, EffectsActivity } from './types'
 
-export const makeParticles = (imageData: ImageData, xStart: number) => {
+export const makeParticles = (
+  imageData: ImageData,
+  xStart: number,
+  scale: number
+) => {
   const particleArray = []
   // Look on each pixel and create particles for those of which the condition of the minimum opacity ALPHA_MIN is satisfied
   // Each pixel represents by four elements in an array in an rgba format - alpha is each fourth value
   for (let y = 0; y < imageData.height; y++) {
     for (let x = 0; x < imageData.width; x++) {
       if (imageData.data[y * 4 * imageData.width + x * 4 + 3] > ALPHA_MIN) {
-        const positionX = x * LETTER_SCALE + xStart
-        const positionY = y * LETTER_SCALE + DISPLACEMENT_Y
+        const positionX = x * scale + xStart
+        const positionY = y * scale + DISPLACEMENT_Y
         particleArray.push(new Particle(positionX, positionY))
       }
     }
@@ -154,5 +157,6 @@ export const effectConnections = (
 
 export const getTextStartPoint = (
   canvasWidth: number,
-  imageDataWidth: number
-) => canvasWidth / 2 - (imageDataWidth * LETTER_SCALE) / 2
+  imageDataWidth: number,
+  scale: number
+) => canvasWidth / 2 - (imageDataWidth * scale) / 2

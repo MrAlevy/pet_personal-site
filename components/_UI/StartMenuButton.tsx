@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function StartMenuButton({
   active,
   ...props
@@ -30,5 +28,5 @@ export default function StartMenuButton({
         ...props.style,
       }}
     />
-  );
+  )
 }

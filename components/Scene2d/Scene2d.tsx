@@ -19,14 +19,27 @@ import {
 } from './utils'
 
 export default function Scene2() {
+  const [resizeTrigger, setResizeTrigger] = React.useState(false)
   const { context, dispatch } = useContext()
   //eslint-disable-next-line react-hooks/exhaustive-deps
   const dispatchCallback = useCallback(dispatch, [])
+
+  const resize = () => {
+    setResizeTrigger(!resizeTrigger)
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', resize)
+    return () => {
+      window.removeEventListener('resize', resize)
+    }
+  })
 
   return (
     <Scene2dMemo<typeof dispatch>
       isLaptopOpened={context.isLaptopOpened}
       dispatch={dispatchCallback}
+      resizeTrigger={resizeTrigger}
     />
   )
 }
@@ -36,24 +49,25 @@ const Scene2dMemo = React.memo(Scene2Generic) as typeof Scene2Generic
 interface Props<TDispatch> {
   isLaptopOpened: boolean
   dispatch: TDispatch
+  resizeTrigger: boolean
 }
 
 function Scene2Generic<TDispatch extends Function>({
   isLaptopOpened,
   dispatch,
+  resizeTrigger,
 }: Props<TDispatch>) {
-  const text = 'hello there!'
+  resizeTrigger
 
+  const text = 'hello there!'
   const isUnmount = {
     value: false,
   }
-
   const particleArray: { particles: Particle[] } = {
     particles: [],
   }
 
   useEffect(() => {
-    console.log('rerender')
     // Get canvas
     let canvas = document.querySelector(`#${CANVAS_ID}`) as HTMLCanvasElement
     const ctx = canvas?.getContext('2d')
@@ -81,11 +95,20 @@ function Scene2Generic<TDispatch extends Function>({
     ]
     const imageData = ctx.getImageData(...textBoundingBox)
 
+    // Define scene scale depends on window size
+    let scale = LETTER_SCALE
+    if (canvas.width <= imageData.width * LETTER_SCALE)
+      scale = (canvas.width / imageData.width) * 0.8
+
     // Find start 'x' coord - center align
-    const displacementX = getTextStartPoint(canvas.width, imageData.width)
+    const displacementX = getTextStartPoint(
+      canvas.width,
+      imageData.width,
+      scale
+    )
 
     // Make particle array
-    particleArray.particles = makeParticles(imageData, displacementX)
+    particleArray.particles = makeParticles(imageData, displacementX, scale)
 
     // Sets for blink effect
     const blink: Blink = {
@@ -133,12 +156,6 @@ function Scene2Generic<TDispatch extends Function>({
     ])
 
     // Event listeners
-    const resize = () => {
-      canvas.width = window.innerWidth
-      const displacementX = getTextStartPoint(canvas.width, imageData.width)
-      blink.blinkX = displacementX
-      particleArray.particles = makeParticles(imageData, displacementX)
-    }
     const mousemove = (e: MouseEvent) => {
       cursor.x = e.x + canvas.clientLeft / 2
       cursor.y = e.y + canvas.clientTop / 2
@@ -154,13 +171,11 @@ function Scene2Generic<TDispatch extends Function>({
       }, 3000)
     }
 
-    window.addEventListener('resize', resize)
     window.addEventListener('mousemove', mousemove)
     canvas.addEventListener('mousemove', mousemoveCanvas)
     canvas.addEventListener('mouseleave', mouseleaveCanvas)
 
     return () => {
-      window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', mousemove)
       canvas.removeEventListener('mousemove', mousemoveCanvas)
       canvas.removeEventListener('mouseleave', mouseleaveCanvas)
@@ -183,4 +198,3 @@ function Scene2Generic<TDispatch extends Function>({
 }
 
 //TODO: animating words changing
-//TODO: make scale factor for screen size
