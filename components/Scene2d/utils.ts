@@ -3,14 +3,19 @@ import {
   BLINK_MULTIPLE,
   BLINK_TIMEOUT,
   CONNECTION_COLOR_1,
+  CONNECTION_COLOR_1_OPENED,
   CONNECTION_COLOR_2,
+  CONNECTION_COLOR_2_OPENED,
   CONNECTION_COLOR_3,
+  CONNECTION_COLOR_3_OPENED,
   CONNECTION_DISTANCE_MAX,
   CONNECTION_DISTANCE_MIN,
   CONNECTION_OPACITY_FACTOR,
   CONNECTION_WIDTH,
   CURSOR_IMPACT_RADIUS,
   DISPLACEMENT_Y,
+  PARTICLE_COLOR,
+  PARTICLE_COLOR_OPENED,
   PARTICLE_SIZE,
 } from './config'
 import Particle from './Particle'
@@ -19,7 +24,8 @@ import { Blink, Cursor, Effects, EffectsActivity } from './types'
 export const makeParticles = (
   imageData: ImageData,
   xStart: number,
-  scale: number
+  scale: number,
+  isLaptopOpened: boolean
 ) => {
   const particleArray = []
   // Look on each pixel and create particles for those of which the condition of the minimum opacity ALPHA_MIN is satisfied
@@ -29,7 +35,13 @@ export const makeParticles = (
       if (imageData.data[y * 4 * imageData.width + x * 4 + 3] > ALPHA_MIN) {
         const positionX = x * scale + xStart
         const positionY = y * scale + DISPLACEMENT_Y
-        particleArray.push(new Particle(positionX, positionY))
+        particleArray.push(
+          new Particle(
+            positionX,
+            positionY,
+            isLaptopOpened ? PARTICLE_COLOR_OPENED : PARTICLE_COLOR
+          )
+        )
       }
     }
   }
@@ -104,11 +116,22 @@ export const effectBlink = (
 export const effectConnections = (
   ctx: CanvasRenderingContext2D,
   cursor: Cursor,
-  particleArray: Particle[]
+  particleArray: Particle[],
+  isLaptopOpened: boolean
 ) => {
   if (!cursor.x || !cursor.y) return
 
   const halfSize = PARTICLE_SIZE / 2
+
+  const COLOR_1 = isLaptopOpened
+    ? CONNECTION_COLOR_1_OPENED
+    : CONNECTION_COLOR_1
+  const COLOR_2 = isLaptopOpened
+    ? CONNECTION_COLOR_2_OPENED
+    : CONNECTION_COLOR_2
+  const COLOR_3 = isLaptopOpened
+    ? CONNECTION_COLOR_3_OPENED
+    : CONNECTION_COLOR_3
 
   for (let a = 0; a < particleArray.length; a++) {
     for (let b = a; b < particleArray.length; b++) {
@@ -133,11 +156,11 @@ export const effectConnections = (
           color.replace('1)', `${opacity})`)
 
         if (distanceToCursor < CURSOR_IMPACT_RADIUS / 2) {
-          ctx.strokeStyle = modifyColor(CONNECTION_COLOR_1)
+          ctx.strokeStyle = modifyColor(COLOR_1)
         } else if (distanceToCursor < CURSOR_IMPACT_RADIUS) {
-          ctx.strokeStyle = modifyColor(CONNECTION_COLOR_2)
+          ctx.strokeStyle = modifyColor(COLOR_2)
         } else {
-          ctx.strokeStyle = modifyColor(CONNECTION_COLOR_3)
+          ctx.strokeStyle = modifyColor(COLOR_3)
         }
 
         // Draw the line

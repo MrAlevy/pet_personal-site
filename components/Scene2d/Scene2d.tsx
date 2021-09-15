@@ -69,7 +69,7 @@ function Scene2Generic<TDispatch extends Function>({
 
   useEffect(() => {
     // Get canvas
-    let canvas = document.querySelector(`#${CANVAS_ID}`) as HTMLCanvasElement
+    const canvas = document.querySelector(`#${CANVAS_ID}`) as HTMLCanvasElement
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
 
@@ -108,7 +108,12 @@ function Scene2Generic<TDispatch extends Function>({
     )
 
     // Make particle array
-    particleArray.particles = makeParticles(imageData, displacementX, scale)
+    particleArray.particles = makeParticles(
+      imageData,
+      displacementX,
+      scale,
+      isLaptopOpened
+    )
 
     // Sets for blink effect
     const blink: Blink = {
@@ -151,7 +156,13 @@ function Scene2Generic<TDispatch extends Function>({
       },
       {
         title: Effects.CONNECTIONS,
-        effect: () => effectConnections(ctx, cursor, particleArray.particles),
+        effect: () =>
+          effectConnections(
+            ctx,
+            cursor,
+            particleArray.particles,
+            isLaptopOpened
+          ),
       },
     ])
 

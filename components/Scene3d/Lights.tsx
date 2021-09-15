@@ -4,7 +4,7 @@ import * as THREE from 'three'
 
 export default function Lights({ isBlinking }: { isBlinking: boolean }) {
   const light1ref = useRef()
-  useHelper(light1ref, THREE.PointLightHelper, 0.1, 'orange')
+  // useHelper(light1ref, THREE.PointLightHelper, 0.1, 'orange')
 
   return (
     <spotLight

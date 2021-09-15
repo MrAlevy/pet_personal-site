@@ -23,7 +23,7 @@ export default function Scene3d() {
       dpr={[1, 2]}
       // camera={{ position: [0, 0, -10], fov: 35 }}
       // orthographic
-      style={{ position: 'absolute' }}
+      style={{ position: 'absolute', maxWidth: 'inherit' }}
     >
       <PerspectiveCamera
         makeDefault // Registers it as the default camera system-wide (default=false)

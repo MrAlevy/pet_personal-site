@@ -13,18 +13,20 @@ export default class Particle {
   y: number
   baseX: number
   baseY: number
+  color: string
   speedFactor: number
 
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, color: string) {
     this.x = x
     this.y = y
     this.baseX = this.x
     this.baseY = this.y
+    this.color = color
     this.speedFactor = Math.random() * EXTENSION_ACCELERATION + 1
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = PARTICLE_COLOR
+    ctx.fillStyle = this.color
     ctx.fillRect(this.x, this.y, PARTICLE_SIZE, PARTICLE_SIZE)
   }
 
@@ -66,7 +68,7 @@ function getNewPosition(position: number, basePosition: number) {
   if (Math.abs(position - basePosition) < 0.5) {
     return basePosition
   } else {
-    let delta = position - basePosition
+    const delta = position - basePosition
     return position - (delta * COMPRESSION_ACCELERATION) / 10
   }
 }

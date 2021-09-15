@@ -6,8 +6,14 @@ import Scene2d from '../components/Scene2d/Scene2d'
 import Scene3d from '../components/Scene3d/Scene3d'
 import Footer from '../components/_UI/Footer'
 
+const COLOR_LAPTOP_OPENED = '#e8d197'
+const COLOR_LAPTOP_CLOSED = '#35004b'
+const COLOR_BLINK = '#520075'
+
 const Home: NextPage = () => {
-  const context = useContext()
+  const {
+    context: { isLaptopOpened, isBlinking },
+  } = useContext()
 
   return (
     <div className='h-screen w-screen'>
@@ -17,18 +23,18 @@ const Home: NextPage = () => {
           name='description'
           content='Alexander Vygodchikov personal page'
         />
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/favicon.ico' /> {/**TODO: favicon */}
       </Head>
 
       <div
-        className='w-full h-full'
+        className={`w-full h-full`}
         style={{
-          backgroundColor: context.context.isLaptopOpened
-            ? 'rgb(215 120 255)'
-            : 'rgba(53,0,75,1)',
+          backgroundColor: isLaptopOpened
+            ? COLOR_LAPTOP_OPENED
+            : COLOR_LAPTOP_CLOSED,
           backgroundImage:
-            context.context.isBlinking && !context.context.isLaptopOpened
-              ? 'radial-gradient(farthest-side at 50% 80px,#520075 0%, rgb(53,0,75) 100%)'
+            isBlinking && !isLaptopOpened
+              ? `radial-gradient(farthest-side at 50% 80px,${COLOR_BLINK} 0%, ${COLOR_LAPTOP_CLOSED} 100%)`
               : '',
         }}
       >

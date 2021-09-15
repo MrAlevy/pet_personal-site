@@ -79,7 +79,7 @@ export function Laptop(props) {
   useHelper(light3ref, THREE.SpotLightHelper, 'orange')
 
   // const [open, setOpen] = React.useState(false) TODO:
-  let open = context.isLaptopOpened //scene.toggleIsLaptopOpened
+  const open = context.isLaptopOpened //scene.toggleIsLaptopOpened
 
   // console.log({ scene3dOpened: open })
   // const setOpen = () => {
@@ -122,7 +122,7 @@ export function Laptop(props) {
     })
   }, [open, hovered])
 
-  let texture = new THREE.TextureLoader().load('/13767-bump.jpg')
+  const texture = new THREE.TextureLoader().load('/13767-bump.jpg')
   texture.rotation = Math.PI / 4
 
   const envMap = useCubeTexture(
@@ -185,6 +185,10 @@ export function Laptop(props) {
             dispatch({
               type: Actions.TOGGLE_LAPTOP_OPENED,
             })
+          dispatch({
+            type: Actions.SET_BLINKING,
+            payload: false,
+          })
         }}
       >
         <mesh
@@ -199,6 +203,10 @@ export function Laptop(props) {
             e.stopPropagation()
             dispatch({
               type: Actions.TOGGLE_LAPTOP_OPENED,
+            })
+            dispatch({
+              type: Actions.SET_BLINKING,
+              payload: false,
             })
           }}
         />

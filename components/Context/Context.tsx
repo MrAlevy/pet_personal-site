@@ -2,7 +2,7 @@ import { createContext, Dispatch, ReactNode, useReducer } from 'react'
 
 export type ActionType = {
   type: Actions
-  payload?: any
+  payload?: unknown
 }
 
 export enum Actions {
