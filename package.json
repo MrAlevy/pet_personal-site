@@ -25,9 +25,12 @@
   },
   "devDependencies": {
     "@types/react": "17.0.19",
+    "@types/three": "^0.131.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
     "autoprefixer": "^9",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.0",
+    "husky": "^7.0.2",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "4.3.5"
