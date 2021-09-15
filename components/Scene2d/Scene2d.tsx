@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
-import { Actions } from '../Context/Context'
+import { Actions, ActionType } from '../Context/Context'
 import useContext from '../Context/useContext'
 import {
   CANVAS_HEIGHT,
@@ -52,11 +52,9 @@ interface Props<TDispatch> {
   resizeTrigger: boolean
 }
 
-function Scene2Generic<TDispatch extends Function>({
-  isLaptopOpened,
-  dispatch,
-  resizeTrigger,
-}: Props<TDispatch>) {
+function Scene2Generic<
+  TDispatch extends (action: ActionType) => void | undefined
+>({ isLaptopOpened, dispatch, resizeTrigger }: Props<TDispatch>) {
   resizeTrigger
 
   const text = 'hello there!'
