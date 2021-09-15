@@ -142,29 +142,37 @@ function Scene2Generic<TDispatch extends Function>({
       undefined
 
     // Animate particle array
-    animateParticles(ctx, particleArray, cursor, effectsActivity, isUnmount, [
-      {
-        title: Effects.BLINK,
-        effect: () =>
-          effectBlink(
-            blink,
-            cursor,
-            effectsActivity,
-            displacementX,
-            displacementX + imageData.width * LETTER_SCALE
-          ),
-      },
-      {
-        title: Effects.CONNECTIONS,
-        effect: () =>
-          effectConnections(
-            ctx,
-            cursor,
-            particleArray.particles,
-            isLaptopOpened
-          ),
-      },
-    ])
+    animateParticles(
+      ctx,
+      particleArray,
+      cursor,
+      effectsActivity,
+      blink,
+      isUnmount,
+      [
+        {
+          title: Effects.BLINK,
+          effect: () =>
+            effectBlink(
+              blink,
+              cursor,
+              effectsActivity,
+              displacementX,
+              displacementX + imageData.width * LETTER_SCALE
+            ),
+        },
+        {
+          title: Effects.CONNECTIONS,
+          effect: () =>
+            effectConnections(
+              ctx,
+              cursor,
+              particleArray.particles,
+              isLaptopOpened
+            ),
+        },
+      ]
+    )
 
     // Event listeners
     const mousemove = (e: MouseEvent) => {

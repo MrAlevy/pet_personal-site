@@ -14,6 +14,7 @@ import {
   CONNECTION_WIDTH,
   CURSOR_IMPACT_RADIUS,
   DISPLACEMENT_Y,
+  EXTENSION_ACCELERATION,
   PARTICLE_COLOR,
   PARTICLE_COLOR_OPENED,
   PARTICLE_SIZE,
@@ -57,6 +58,7 @@ export const animateParticles = (
   particleArray: { particles: Particle[] },
   cursor: Cursor,
   effectsActivity: EffectsActivity,
+  blink: Blink,
   isUnmount: { value: boolean },
   effects?: { title: Effects; effect: () => void }[]
 ) => {
@@ -67,7 +69,7 @@ export const animateParticles = (
   effects?.forEach(effect => effectsActivity[effect.title] && effect.effect())
 
   particleArray.particles.forEach(particle => {
-    particle.update(cursor)
+    particle.update(cursor, blink.isActive)
     particle.draw(ctx)
   })
 
@@ -77,6 +79,7 @@ export const animateParticles = (
       particleArray,
       cursor,
       effectsActivity,
+      blink,
       isUnmount,
       effects
     )

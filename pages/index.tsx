@@ -8,7 +8,7 @@ import Footer from '../components/_UI/Footer'
 
 const COLOR_LAPTOP_OPENED = '#e8d197'
 const COLOR_LAPTOP_CLOSED = '#35004b'
-const COLOR_BLINK = '#520075'
+const COLOR_BLINK = '#56007a'
 
 const Home: NextPage = () => {
   const {
@@ -39,20 +39,22 @@ const Home: NextPage = () => {
         }}
       >
         <Scene2d />
-        {/* <div
-          style={{
-            color: '#230031',
-            font: `bold 27px Verdana`,
-            position: 'absolute',
-            top: '150px',
-            fontSize: '78px',
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-          }}
-        >
-          hello there!
-        </div> */}
+        {/* {
+          <div
+            style={{
+              color: 'rgb(195 53 255)',
+              font: `bold 27px Verdana`,
+              position: 'absolute',
+              top: '150px',
+              fontSize: '78px',
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            hello there!
+          </div>
+        } */}
         <Scene3d />
         <Footer />
       </div>

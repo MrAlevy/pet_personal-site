@@ -61,16 +61,16 @@ export default function Footer() {
       className={`absolute bottom-0 w-full
       flex justify-center items-center
       select-none
-      ${isLaptopOpened ? 'text-purple-900' : 'text-purple-300'}
+      ${isLaptopOpened ? 'text-gray-500' : 'text-purple-300'}
       `}
     >
       <div
         className={`flex flex-wrap justify-between items-center w-3/5 px-4 py-3
         border-t border-opacity-25
-        hover:opacity-90
+        hover:opacity-80
         ${
           isLaptopOpened
-            ? 'border-purple-900 opacity-70'
+            ? 'border-purple-900 opacity-60'
             : 'border-purple-300 opacity-40'
         }
         `}

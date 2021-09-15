@@ -30,7 +30,7 @@ export default class Particle {
     ctx.fillRect(this.x, this.y, PARTICLE_SIZE, PARTICLE_SIZE)
   }
 
-  update(cursor: Cursor) {
+  update(cursor: Cursor, isBlinking: boolean) {
     const dx = (cursor.x || 0) - this.x
     const dy = (cursor.y || 0) - this.y
     const distance = Math.sqrt(dx * dx + dy * dy)
@@ -50,7 +50,10 @@ export default class Particle {
       // Random movement
       const randomFactor = Math.random() > RANDOM_FACTOR ? -1 : 1
 
-      const movingCoefficient = slowFactor * randomFactor * this.speedFactor
+      const movingCoefficient =
+        slowFactor *
+        randomFactor *
+        (isBlinking ? this.speedFactor : this.speedFactor * 0.5)
 
       this.x -= forceDirectionX * movingCoefficient
       this.y -= forceDirectionY * movingCoefficient
