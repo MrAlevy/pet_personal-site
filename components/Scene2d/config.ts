@@ -30,7 +30,7 @@ export const CONNECTION_COLOR_2 = 'rgba(80,30,230,1)'
 export const CONNECTION_COLOR_3 = 'rgba(255,255,255,1)'
 export const CONNECTION_COLOR_1_OPENED = 'rgba(255,255,90,1)'
 export const CONNECTION_COLOR_2_OPENED = 'rgba(180,60,0,1)'
-export const CONNECTION_COLOR_3_OPENED = 'rgba(255,100,1,1)'
+export const CONNECTION_COLOR_3_OPENED = 'rgba(255,80,0,1)'
 
 // Effect - blink
 export const BLINK_MULTIPLE = 50

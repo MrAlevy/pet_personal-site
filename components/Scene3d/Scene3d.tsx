@@ -1,31 +1,41 @@
-//@ts-nocheck
 import {
   ContactShadows,
-  GizmoHelper,
-  GizmoViewport,
   OrbitControls,
   PerspectiveCamera,
+  Html,
 } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import useContext from '../Context/useContext'
-import { Laptop } from './Laptop'
+import { GizmoHelper } from './Helpers'
 import Lights from './Lights'
+import FlyingWords from './FlyingWords'
+import Spinner from './Spinner'
+import { lazy } from 'react'
+
+const Laptop = lazy(async () => {
+  const [moduleExports] = await Promise.all([
+    import('./Laptop'),
+    new Promise(resolve => setTimeout(resolve, 3000)),
+  ])
+  return moduleExports
+})
 
 const MAX_WIDTH = 1600
+const showHelpers = process.env.NEXT_PUBLIC_SHOW_HELPERS === 'true'
 
 export default function Scene3d() {
-  const context = useContext()
+  const { context, dispatch } = useContext()
   const [cameraZFactor, setCameraZFactor] = useState(1)
 
-  const isBlinking = context.context.isBlinking
+  const { isLaptopOpened, isBlinking } = context
+
   const calcZFactor = () => 1600 / window.innerWidth
 
   const resize = () => {
     if (window.innerWidth < MAX_WIDTH) {
       setCameraZFactor(calcZFactor())
     } else if (cameraZFactor !== 1) {
-      console.log('set 1')
       setCameraZFactor(1)
     }
   }
@@ -45,33 +55,27 @@ export default function Scene3d() {
         makeDefault
         position={[0.5, 0.5, -4 * cameraZFactor]}
       />
-      <Suspense fallback={null}>
-        <Laptop context={context} />
+      <Suspense fallback={<Spinner />}>
+        <Laptop context={{ context, dispatch }} />
+        {/* {isLaptopOpened && <FlyingWords />} */}
         <Lights isBlinking={isBlinking} />
-        {/* <Textq /> */}
+        <ContactShadows
+          width={7}
+          height={5}
+          position={[0, -0.5, 0]}
+          rotation-x={Math.PI / 2}
+          opacity={isBlinking ? 0.3 : 0.15}
+          blur={isBlinking ? 0.1 : 0.2}
+          far={isBlinking ? 7 : 4.5}
+        />
       </Suspense>
-      <ContactShadows
-        width={7}
-        height={5}
-        position={[0, -0.5, 0]}
-        rotation-x={Math.PI / 2}
-        opacity={isBlinking ? 0.3 : 0.15}
-        blur={isBlinking ? 0.1 : 0.2}
-        far={isBlinking ? 7 : 4.5}
-      />
       <OrbitControls
         minPolarAngle={Math.PI / 4}
         maxPolarAngle={Math.PI / 2.3}
         minDistance={3.5 * cameraZFactor}
         maxDistance={6.5 * cameraZFactor}
       />
-
-      <GizmoHelper alignment='bottom-right' margin={[80, 80]}>
-        <GizmoViewport
-          axisColors={['#f7867e', '#7ef782', '#827ef7']}
-          labelColor='black'
-        />
-      </GizmoHelper>
+      {showHelpers && <GizmoHelper />}
     </Canvas>
   )
 }

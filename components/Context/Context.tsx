@@ -2,7 +2,7 @@ import { createContext, Dispatch, ReactNode, useReducer } from 'react'
 
 export type ActionType = {
   type: Actions
-  payload?: unknown
+  payload?: any
 }
 
 export enum Actions {
@@ -15,7 +15,10 @@ const initialState = {
   isBlinking: false,
 }
 
-const reducer = (state: typeof initialState, action: ActionType) => {
+const reducer = (
+  state: typeof initialState,
+  action: ActionType
+): typeof initialState => {
   switch (action.type) {
     case Actions.TOGGLE_LAPTOP_OPENED:
       return { ...state, isLaptopOpened: !state.isLaptopOpened }

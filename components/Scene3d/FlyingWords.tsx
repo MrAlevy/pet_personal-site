@@ -16,7 +16,7 @@ import React, { useRef } from 'react'
 import LaptopScreen from '../LaptopScreen/LaptopScreen'
 import * as THREE from 'three'
 
-export default function Textq(props) {
+export default function FlyingWords(props) {
   const group = useRef()
   const rf1 = useRef()
   const rf2 = useRef()
@@ -61,7 +61,7 @@ export default function Textq(props) {
               position={[
                 (Math.random() + 1) * 2 - 3,
                 (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 3,
+                (Math.random() + 1) * 2 - 6,
               ]}
             >
               hello world!
@@ -81,7 +81,7 @@ export default function Textq(props) {
               position={[
                 (Math.random() + 1) * 2 - 3,
                 (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 3,
+                (Math.random() + 1) * 2 - 6,
               ]}
             >
               hello world!!
@@ -101,7 +101,7 @@ export default function Textq(props) {
               position={[
                 (Math.random() + 1) * 2 - 3,
                 (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 3,
+                (Math.random() + 1) * 2 - 7,
               ]}
             >
               hello world!!!

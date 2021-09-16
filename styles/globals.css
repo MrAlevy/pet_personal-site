@@ -17,14 +17,6 @@
   padding: 0;
 }
 
-body > div > div > div > div > div {
-  /* Selector for Laptop Model Scene - to make reflections on the html screen */
-  mix-blend-mode: multiply;
-  opacity: 90%;
-  filter: brightness(1);
-  /* DEPENDS ON LIGHT!!! */
-}
-
 /* #canvas1 {
   position: absolute;
   top: 0;

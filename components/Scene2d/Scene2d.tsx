@@ -116,7 +116,7 @@ function Scene2Generic<
     // Sets for blink effect
     const blink: Blink = {
       _isActive: false,
-      timer: 0,
+      timer: -100,
       blinkX: displacementX,
       blinkY: CANVAS_HEIGHT / 2,
       set isActive(isActive: boolean) {

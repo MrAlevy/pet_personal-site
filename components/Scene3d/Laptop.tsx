@@ -22,7 +22,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Actions } from '../Context/Context'
 //TODO: gui to DEV DEPS remove
 
-export function Laptop(props) {
+export default function Laptop(props) {
   const { context, dispatch } = props.context
 
   const group = useRef()
@@ -221,6 +221,9 @@ export function Laptop(props) {
               scale={[0.01, 0.01, 0.01]}
               position={[0, 0.1, 0.004]}
               rotation-y={Math.PI}
+              style={{
+                opacity: '80%',
+              }}
             >
               <LaptopScreen open={open} />
             </Html>
