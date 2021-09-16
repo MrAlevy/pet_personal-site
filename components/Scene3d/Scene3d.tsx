@@ -1,20 +1,16 @@
 //@ts-nocheck
-import { useState, useEffect, useRef, useCallback } from 'react'
 import {
-  Environment,
-  PerspectiveCamera,
   ContactShadows,
-  OrbitControls,
   GizmoHelper,
   GizmoViewport,
+  OrbitControls,
+  PerspectiveCamera,
 } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
-import { Laptop } from './Laptop'
-import Textq from './FlyingText'
+import { Suspense, useEffect, useState } from 'react'
 import useContext from '../Context/useContext'
+import { Laptop } from './Laptop'
 import Lights from './Lights'
-import * as THREE from 'three'
 
 const MAX_WIDTH = 1600
 
@@ -29,14 +25,13 @@ export default function Scene3d() {
     if (window.innerWidth < MAX_WIDTH) {
       setCameraZFactor(calcZFactor())
     } else if (cameraZFactor !== 1) {
+      console.log('set 1')
       setCameraZFactor(1)
     }
   }
 
   useEffect(() => {
-    if (window.innerWidth < MAX_WIDTH) {
-      setCameraZFactor(calcZFactor())
-    }
+    resize()
     window.addEventListener('resize', resize)
     return () => {
       window.removeEventListener('resize', resize)
@@ -46,10 +41,10 @@ export default function Scene3d() {
 
   return (
     <Canvas dpr={[1, 2]} style={{ position: 'absolute' }}>
-      <PerspectiveCamera makeDefault position={[0.5, 0.5, -4 * cameraZFactor]}>
-        <mesh />
-      </PerspectiveCamera>
-      {/* <pointLight position={[-5, 3, -2]} intensity={3.5} color='blue' /> */}
+      <PerspectiveCamera
+        makeDefault
+        position={[0.5, 0.5, -4 * cameraZFactor]}
+      />
       <Suspense fallback={null}>
         <Laptop context={context} />
         <Lights isBlinking={isBlinking} />
@@ -64,7 +59,12 @@ export default function Scene3d() {
         blur={isBlinking ? 0.1 : 0.2}
         far={isBlinking ? 7 : 4.5}
       />
-      <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 2.3} />
+      <OrbitControls
+        minPolarAngle={Math.PI / 4}
+        maxPolarAngle={Math.PI / 2.3}
+        minDistance={3.5 * cameraZFactor}
+        maxDistance={6.5 * cameraZFactor}
+      />
 
       <GizmoHelper alignment='bottom-right' margin={[80, 80]}>
         <GizmoViewport

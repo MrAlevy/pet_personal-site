@@ -18,7 +18,7 @@ export const PARTICLE_COLOR_OPENED = '#3497f4e0'
 export const EXTENSION_ACCELERATION = 3.3
 export const COMPRESSION_ACCELERATION = 0.3
 export const RANDOM_FACTOR = 0.9
-export const CURSOR_IMPACT_RADIUS = 40
+export const CURSOR_IMPACT_RADIUS = 50
 
 // Effect - connections
 export const CONNECTION_OPACITY_FACTOR = 15

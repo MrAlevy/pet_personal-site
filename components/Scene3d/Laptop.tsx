@@ -37,16 +37,16 @@ export function Laptop(props) {
   useFrame(state => {
     const t = state.clock.getElapsedTime()
 
-    const { x, y, z } = state.camera.position
-    /*     if (opening && z > -29) {
-      // console.log(x, y, z)
-      console.log('look')
-      state.camera.position.lerp(vec.set(0, 0, open ? -24 : -32), 0.01)
-      // state.camera.lookAt(0, 0, 0)
-      // setOpening(false)
-    } else {
-      setOpening(false)
-    } */
+    // const { x, y, z } = state.camera.position
+    // if (opening && z > -29) {
+    //   // console.log(x, y, z)
+    //   console.log('look')
+    //   state.camera.position.lerp(vec.set(0, 0, open ? -24 : -32), 0.01)
+    //   // state.camera.lookAt(0, 0, 0)
+    //   // setOpening(false)
+    // } else {
+    //   setOpening(false)
+    // }
 
     group.current.rotation.x = THREE.MathUtils.lerp(
       group.current.rotation.x,
