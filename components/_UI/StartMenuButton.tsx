@@ -25,6 +25,7 @@ export default function StartMenuButton({
       {...props}
       style={{
         width: '40px',
+        height: '95%',
         ...props.style,
       }}
     />

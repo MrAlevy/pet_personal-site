@@ -9,6 +9,8 @@ export default function StartMenu({
   openedApps,
   setExpandedApps,
   setActiveApp,
+  setLaptopHovered,
+  closeLaptop,
   touchYouTube,
 }: {
   activeApp: AppNames
@@ -16,6 +18,8 @@ export default function StartMenu({
   openedApps?: AppNames[]
   setExpandedApps: React.Dispatch<React.SetStateAction<AppNames[]>>
   setActiveApp: React.Dispatch<React.SetStateAction<AppNames>>
+  setLaptopHovered: React.Dispatch<React.SetStateAction<boolean>>
+  closeLaptop: () => void
   touchYouTube: () => void
 }) {
   const getClockValue = () => dayjs().format('HH:MM:ss/DD.MM.YYYY')
@@ -36,6 +40,15 @@ export default function StartMenu({
         paddingLeft: 142,
       }}
     >
+      <StartMenuButton
+        key='start'
+        style={{ border: 'none', marginLeft: -138, marginRight: 98 }}
+        active={false}
+        onMouseEnter={() => setLaptopHovered(true)}
+        onMouseLeave={() => setLaptopHovered(false)}
+        onClick={() => closeLaptop()}
+      />
+
       {openedApps?.map(appName => (
         <StartMenuButton
           key={appName}

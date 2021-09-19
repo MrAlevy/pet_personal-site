@@ -1,6 +1,8 @@
 import { Html } from '@react-three/drei'
 import { motion } from 'framer-motion'
 
+//TODO: responsible?
+
 const Square = ({ number }: { number: number }) => {
   let x, rotateZ, marginTop, backgroundColor
 
@@ -50,7 +52,7 @@ const Square = ({ number }: { number: number }) => {
         position: 'absolute',
         width: 60,
         height: 60,
-        border: '2px solid #c6b1cfed',
+        border: '2px solid #d0c7d49e',
       }}
     />
   )

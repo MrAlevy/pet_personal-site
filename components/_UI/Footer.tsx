@@ -62,6 +62,7 @@ export default function Footer() {
       flex justify-center items-center
       select-none
       ${isLaptopOpened ? 'text-gray-500' : 'text-purple-300'}
+      ${isLaptopOpened && 'mix-blend-multiply'}
       `}
     >
       <div
@@ -70,7 +71,7 @@ export default function Footer() {
         hover:opacity-80
         ${
           isLaptopOpened
-            ? 'border-purple-900 opacity-60'
+            ? 'border-gray-600 opacity-60'
             : 'border-purple-300 opacity-40'
         }
         `}

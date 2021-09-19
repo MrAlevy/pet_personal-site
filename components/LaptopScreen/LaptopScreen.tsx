@@ -9,7 +9,15 @@ import { useSpring, animated } from 'react-spring'
 import { motion } from 'framer-motion'
 
 //TODO: make spring from core package - remove react-spring
-export default function LaptopScreen({ open }: { open: boolean }) {
+export default function LaptopScreen({
+  isLaptopOpened,
+  setLaptopHovered,
+  closeLaptop,
+}: {
+  isLaptopOpened: boolean
+  setLaptopHovered: React.Dispatch<React.SetStateAction<boolean>>
+  closeLaptop: () => void
+}) {
   const [expandedApps, setExpandedApps] = useState([AppNames.Chrome])
   const [activeApp, setActiveApp] = useState(AppNames.Chrome)
   const [youTubeTouched, setYouTubeTouched] = useState(false)
@@ -33,15 +41,15 @@ export default function LaptopScreen({ open }: { open: boolean }) {
   ]
 
   const opacityAnimated = useSpring({
-    to: { opacity: open ? 1 : 0 },
-    from: { opacity: open ? 0 : 1 },
+    to: { opacity: isLaptopOpened ? 1 : 0 },
+    from: { opacity: isLaptopOpened ? 0 : 1 },
     delay: 700,
     config: { duration: 500 },
   })
 
   const opacityAnimated1 = useSpring({
-    to: { opacity: open ? 0 : 1 },
-    from: { opacity: open ? 1 : 0 },
+    to: { opacity: isLaptopOpened ? 0 : 1 },
+    from: { opacity: isLaptopOpened ? 1 : 0 },
     delay: 700,
     config: { duration: 300 },
   })
@@ -53,11 +61,11 @@ export default function LaptopScreen({ open }: { open: boolean }) {
         className='absolute w-full h-full bg-gray-900'
       ></animated.div> */}
       <motion.div
-        initial={{ opacity: open ? 0 : 1 }}
-        animate={{ opacity: open ? [0, 0, 1, 1, 0] : [0, 1] }}
+        initial={{ opacity: isLaptopOpened ? 0 : 1 }}
+        animate={{ opacity: isLaptopOpened ? [0, 0, 1, 1, 0] : [0, 1] }}
         transition={{
           duration: 0.8,
-          times: open ? [0, 0.1, 0.3, 0.8, 1] : [0, 1],
+          times: isLaptopOpened ? [0, 0.1, 0.3, 0.8, 1] : [0, 1],
         }}
         className='absolute w-full h-full bg-gray-900'
       ></motion.div>
@@ -87,6 +95,8 @@ export default function LaptopScreen({ open }: { open: boolean }) {
           openedApps={openedApps}
           setActiveApp={setActiveApp}
           setExpandedApps={setExpandedApps}
+          setLaptopHovered={setLaptopHovered}
+          closeLaptop={closeLaptop}
           touchYouTube={() => setYouTubeTouched(true)}
         />
       </animated.div>
