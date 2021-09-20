@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { AppNames } from '../../utils/constants'
 import Chrome from './Apps/Chrome'
@@ -5,10 +6,7 @@ import VSCode from './Apps/VSCode'
 import YouTube from './Apps/YouTube'
 import AppWindow from './AppWindow'
 import StartMenu from './StartMenu'
-import { useSpring, animated } from 'react-spring'
-import { motion } from 'framer-motion'
 
-//TODO: make spring from core package - remove react-spring
 export default function LaptopScreen({
   isLaptopOpened,
   setLaptopHovered,
@@ -40,26 +38,8 @@ export default function LaptopScreen({
     },
   ]
 
-  const opacityAnimated = useSpring({
-    to: { opacity: isLaptopOpened ? 1 : 0 },
-    from: { opacity: isLaptopOpened ? 0 : 1 },
-    delay: 700,
-    config: { duration: 500 },
-  })
-
-  const opacityAnimated1 = useSpring({
-    to: { opacity: isLaptopOpened ? 0 : 1 },
-    from: { opacity: isLaptopOpened ? 1 : 0 },
-    delay: 700,
-    config: { duration: 300 },
-  })
-
   return (
     <>
-      {/* <animated.div
-        style={opacityAnimated1}
-        className='absolute w-full h-full bg-gray-900'
-      ></animated.div> */}
       <motion.div
         initial={{ opacity: isLaptopOpened ? 0 : 1 }}
         animate={{ opacity: isLaptopOpened ? [0, 0, 1, 1, 0] : [0, 1] }}
@@ -68,9 +48,14 @@ export default function LaptopScreen({
           times: isLaptopOpened ? [0, 0.1, 0.3, 0.8, 1] : [0, 1],
         }}
         className='absolute w-full h-full bg-gray-900'
-      ></motion.div>
-      <animated.div
-        style={opacityAnimated}
+      />
+      <motion.div
+        initial={{ opacity: isLaptopOpened ? 0 : 1 }}
+        animate={{ opacity: isLaptopOpened ? 1 : 0 }}
+        transition={{
+          delay: 0.7,
+          duration: 0.5,
+        }}
         className='h-full w-full overflow-hidden bg-img-desktop bg-cover'
       >
         <div className='w-full' style={{ height: '95%' }}>
@@ -99,7 +84,7 @@ export default function LaptopScreen({
           closeLaptop={closeLaptop}
           touchYouTube={() => setYouTubeTouched(true)}
         />
-      </animated.div>
+      </motion.div>
     </>
   )
 }

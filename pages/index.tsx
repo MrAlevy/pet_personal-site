@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import React, { useEffect } from 'react'
 import useContext from '../components/Context/useContext'
 import Scene2d from '../components/Scene2d/Scene2d'
 import Scene3d from '../components/Scene3d/Scene3d'
@@ -8,7 +7,7 @@ import Footer from '../components/_UI/Footer'
 
 const COLOR_LAPTOP_OPENED = '#e8d197'
 const COLOR_LAPTOP_CLOSED = '#35004b'
-const COLOR_BLINK = '#56007a'
+const COLOR_BLINK = '#7000a0'
 
 const Home: NextPage = () => {
   const {

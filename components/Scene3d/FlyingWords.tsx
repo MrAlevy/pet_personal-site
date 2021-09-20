@@ -12,7 +12,7 @@ import {
   Text,
 } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import LaptopScreen from '../LaptopScreen/LaptopScreen'
 import * as THREE from 'three'
 

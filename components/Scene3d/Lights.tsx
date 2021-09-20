@@ -1,60 +1,39 @@
-import { useRef } from 'react'
 import { useHelper } from '@react-three/drei'
+import { useRef } from 'react'
 import * as THREE from 'three'
+import { SHOW_HELPERS } from './config'
 
 export default function Lights({ isBlinking }: { isBlinking: boolean }) {
-  const light1ref = useRef()
-  // useHelper(light1ref, THREE.PointLightHelper, 0.1, 'orange')
+  const spotLightRef = useRef()
+  const ambientLightRef = useRef()
+
+  useHelper(
+    spotLightRef,
+    THREE.PointLightHelper,
+    SHOW_HELPERS ? 0.1 : 0,
+    '#ffffff'
+  )
+  useHelper(
+    ambientLightRef,
+    THREE.PointLightHelper,
+    SHOW_HELPERS ? 0.1 : 0,
+    '#ff3c77'
+  )
 
   return (
-    <spotLight
-      ref={light1ref}
-      intensity={isBlinking ? 2 : 0.3}
-      position={[0, 2, 1]}
-      color='#fffcf8'
-    />
+    <>
+      <spotLight
+        ref={spotLightRef}
+        color='#fff0f0'
+        position={[0, 3, 0]}
+        intensity={isBlinking ? 1.3 : 0.5}
+      />
+      <ambientLight
+        ref={ambientLightRef}
+        intensity={isBlinking ? 0.7 : 0.2}
+        position={[0, 2, 0]}
+        color='#ff89f5'
+      />
+    </>
   )
-}
-
-{
-  /*       <spotLight
-        // ref={light2ref}
-        intensity={0.3}
-        position={[5.5, 0.9, 3.11]}
-        color='#fffcf8'
-      /> */
-}
-{
-  /*       <spotLight
-        // ref={light3ref}
-        intensity={0.3}
-        position={[-7.5, 1.9, 3.11]}
-        color='#fffcf8'
-      />
-
-      <pointLight
-        // ref={light1ref}
-        position={[0, 2.5, -5]}
-        intensity={1}
-        color='#cec9c5'
-      />
-      <pointLight
-        // ref={light1ref}
-        position={[0, 1.5, 2]}
-        intensity={0.5}
-        color='#fffcf8'
-      />
-
-      <pointLight position={[0, 3.5, 9]} intensity={0.1} color='white' />
-      <pointLight position={[-2.5, 3.5, 9]} intensity={0.1} color='white' />
-      <pointLight position={[2.5, 3.5, 9]} intensity={0.1} color='white' />
-
-      <pointLight position={[0, 3.5, 6]} intensity={0.1} color='white' />
-      <pointLight position={[-2.5, 3.5, 6]} intensity={0.1} color='white' />
-      <pointLight position={[2.5, 3.5, 6]} intensity={0.1} color='white' />
-
-      <pointLight position={[0, 3.5, 3]} intensity={0.1} color='white' />
-      <pointLight position={[-2.5, 3.5, 3]} intensity={0.1} color='white' />
-      <pointLight position={[2.5, 3.5, 3]} intensity={0.1} color='white' />
- */
 }

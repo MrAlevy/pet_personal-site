@@ -2,17 +2,14 @@ import {
   ContactShadows,
   OrbitControls,
   PerspectiveCamera,
-  Html,
 } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
-import React, { Suspense, useEffect, useState, useRef } from 'react'
+import { Canvas } from '@react-three/fiber'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import useContext from '../Context/useContext'
+import { MAX_WIDTH, OPEN_Y_DECREASE } from './config'
 import { GizmoHelper } from './Helpers'
 import Lights from './Lights'
-import FlyingWords from './FlyingWords'
 import Spinner from './Spinner'
-import { lazy } from 'react'
-import { MAX_WIDTH, OPEN_Y_DECREASE } from './config'
 
 const Laptop = lazy(async () => {
   const [moduleExports] = await Promise.all([
@@ -22,19 +19,14 @@ const Laptop = lazy(async () => {
   return moduleExports
 })
 
-const showHelpers = process.env.NEXT_PUBLIC_SHOW_HELPERS === 'true'
-
 export default function Scene3d() {
   const context = useContext()
   const [cameraScaleFactor, setCameraScaleFactor] = useState(1)
-
   const { isLaptopOpened, isBlinking } = context.context
-
-  const calcScaleFactor = () => 1600 / window.innerWidth
 
   const resize = () => {
     if (window.innerWidth < MAX_WIDTH) {
-      setCameraScaleFactor(calcScaleFactor())
+      setCameraScaleFactor(1600 / window.innerWidth)
     } else if (cameraScaleFactor !== 1) {
       setCameraScaleFactor(1)
     }
@@ -82,12 +74,7 @@ export default function Scene3d() {
         minDistance={1.5 * cameraScaleFactor}
         maxDistance={6.5 * cameraScaleFactor}
       />
-      {showHelpers && <GizmoHelper />}
+      <GizmoHelper />
     </Canvas>
   )
 }
-
-//TODO:
-/**
- * - lights
- */

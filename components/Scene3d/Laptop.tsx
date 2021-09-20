@@ -1,27 +1,31 @@
-//@ts-nocheck
-import { useState, useEffect } from 'react'
+import { animated, config, useSpring } from '@react-spring/three'
+import { Html, useCubeTexture, useGLTF } from '@react-three/drei'
 import {
-  Html,
-  useGLTF,
-  OrbitControls,
-  GizmoHelper,
-  GizmoViewport,
-  GizmoViewcube,
-  useHelper,
-  BoxHelper,
-  AxesHelper,
-  useCubeTexture,
-} from '@react-three/drei'
-import { useThree, useFrame } from '@react-three/fiber'
-import React, { useRef } from 'react'
-import LaptopScreen from '../LaptopScreen/LaptopScreen'
+  EulerProps,
+  GroupProps,
+  MeshStandardMaterialProps,
+  useFrame,
+  Vector3Props,
+} from '@react-three/fiber'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { useSpring, animated, config, to } from '@react-spring/three'
-import { useLoader } from '@react-three/fiber'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { BufferGeometry } from 'three'
+import { GLTF } from 'three-stdlib'
 import { Actions } from '../Context/Context'
+import LaptopScreen from '../LaptopScreen/LaptopScreen'
 import { OPEN_Y_DECREASE } from './config'
-//TODO: gui to DEV DEPS remove
+
+type Material = MeshStandardMaterialProps & { [key: string]: any }
+type Model = GLTF & {
+  materials: {
+    ComputerFrame: Material
+    ComputerScreen: Material
+  }
+  nodes: {
+    Frame_ComputerFrame_0: { geometry: BufferGeometry }
+    Screen_ComputerScreen_0: { geometry: BufferGeometry }
+  }
+}
 
 export default function Laptop({
   context: {
@@ -33,33 +37,34 @@ export default function Laptop({
   context: any
   cameraScaleFactor: number
 }) {
-  const laptopModel = useGLTF('/laptop.glb')
-  const laptopRef = useRef()
+  const laptopModel = useGLTF('/laptop.glb') as Model
+  const laptopRef = useRef<GroupProps>()
   const [isOpeningClosing, setIsOpeningClosing] = useState(false)
   const [wasOpened, setWasOpened] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const [cameraCoordsRatios, setCameraCoordsRatios] = useState<number[]>([])
 
+  // Camera default positions for open-close states
   const cameraPositionVector = isLaptopOpened
     ? new THREE.Vector3().set(-0.118, 0.8, -2.5 * cameraScaleFactor)
     : new THREE.Vector3().set(0.5, 0.5, -4 * cameraScaleFactor)
 
-  const [cameraCoordsRatios, setCameraCoordsRatios] = useState([])
-  const calcCoordsRatio = (x, y, z) => Math.round((x / (x + y + z)) * 1000)
-
   useEffect(() => {
     setCameraCoordsRatios([])
-    // setIsOpeningClosing(true)
     if (isLaptopOpened) setWasOpened(true)
   }, [isLaptopOpened])
+
+  useEffect(() => {
+    document.body.style.cursor = hovered ? 'pointer' : 'auto'
+  }, [hovered])
 
   useFrame(state => {
     const t = state.clock.getElapsedTime()
 
-    const { x, y, z } = state.camera.position
-
+    // Move camera to the new position on open-close the laptop
     if (isOpeningClosing) {
-      const coordsRatio = calcCoordsRatio(x, y, z)
-
+      const { x: camX, y: camY, z: camZ } = state.camera.position
+      const coordsRatio = Math.round((camX / (camX + camY + camZ)) * 1000)
       const isRatiosAllEqual = cameraCoordsRatios.every(e => e === coordsRatio)
       if (cameraCoordsRatios.length === 5 && isRatiosAllEqual) {
         setIsOpeningClosing(false)
@@ -75,40 +80,41 @@ export default function Laptop({
       if (isOpeningClosing) setIsOpeningClosing(false)
     }
 
-    laptopRef.current.rotation.x = THREE.MathUtils.lerp(
-      laptopRef.current.rotation.x,
+    // Make laptop floating if opened; rest - if closed
+    const laptopRotation = laptopRef.current?.rotation as EulerProps
+    const laptopPosition = laptopRef.current?.position as Vector3Props
+
+    const { x: rotX, y: rotY, z: rotZ } = laptopRotation
+    const { y: posY } = laptopPosition
+
+    laptopRotation.x = THREE.MathUtils.lerp(
+      rotX || 0,
       !isLaptopOpened ? (!isOpeningClosing ? Math.cos(t / 2) / 10 : 0) : 0,
       0.1
     )
-    laptopRef.current.rotation.y = THREE.MathUtils.lerp(
-      laptopRef.current.rotation.y,
-      !isLaptopOpened
-        ? Math.PI + Math.sin(t / 4) / 20
-        : laptopRef.current.rotation.y,
+    laptopRotation.y = THREE.MathUtils.lerp(
+      rotY || 0,
+      !isLaptopOpened ? Math.PI + Math.sin(t / 4) / 20 : rotY || 0,
       0.1
     )
-    laptopRef.current.rotation.z = THREE.MathUtils.lerp(
-      laptopRef.current.rotation.z,
+    laptopRotation.z = THREE.MathUtils.lerp(
+      rotZ || 0,
       !isLaptopOpened ? (!isOpeningClosing ? Math.sin(t / 4) / 20 : 0) : 0,
       0.1
     )
-    laptopRef.current.position.y = THREE.MathUtils.lerp(
-      laptopRef.current.position.y,
+    laptopPosition.y = THREE.MathUtils.lerp(
+      posY || 0,
       !isLaptopOpened ? (1 + Math.sin(t)) / 5 : -0.43 - OPEN_Y_DECREASE,
       0.1
     )
   })
 
-  useEffect(
-    () => void (document.body.style.cursor = hovered ? 'pointer' : 'auto'),
-    [hovered]
-  )
-
+  // Open-close spring animation
   const springs = useSpring({
     'rotation-x':
-      isLaptopOpened & !hovered
+      isLaptopOpened && !hovered
         ? -Math.PI / 10
-        : isLaptopOpened & hovered
+        : isLaptopOpened && hovered
         ? -Math.PI / 15
         : hovered
         ? Math.PI / 2.1
@@ -118,15 +124,7 @@ export default function Laptop({
       : config.slow,
   })
 
-  // useEffect(() => {
-  //   springs['rotation-x'].start({
-  //     //TODO:
-  //     config: !isLaptopOpened
-  //       ? config.slow
-  //       : { ...config.gentle, tension: 90, friction: 12 },
-  //   })
-  // }, [isLaptopOpened, hovered])
-
+  // Materials settings
   const texture = new THREE.TextureLoader().load('/13767-bump.jpg')
   texture.rotation = Math.PI / 4
 
@@ -139,39 +137,37 @@ export default function Laptop({
   //   { path: '/textures/' }
   // )
 
-  const mat1 = laptopModel.materials.ComputerFrame
-  // console.log(mat1)
-  mat1.metalness = 0.8
-  mat1.roughness = 0.4
-  mat1.color = new THREE.Color('skyblue')
-  mat1.bumpMap = texture
-  mat1.bumpScale = 0.006
-  mat1.envMap = envMap
-  mat1.lightProbeIntensity = 1.0
-  mat1.directionalLightIntensity = 0.2
-  mat1.envMapIntensity = 1
-  mat1.envMaps = 'reflection'
-  // mat1.wireframe = true
+  const frameMaterial = laptopModel.materials.ComputerFrame
+  // console.log(frameMaterial)
+  frameMaterial.metalness = 0.8
+  frameMaterial.roughness = 0.4
+  frameMaterial.color = new THREE.Color('skyblue')
+  frameMaterial.bumpMap = texture
+  frameMaterial.bumpScale = 0.006
+  frameMaterial.envMap = envMap
+  frameMaterial.lightProbeIntensity = 1.0
+  frameMaterial.directionalLightIntensity = 0.2
+  frameMaterial.envMapIntensity = isLaptopOpened ? 1 : 0.6
+  frameMaterial.envMaps = 'reflection'
+  // frameMaterial.wireframe = true
 
-  const mat2 = laptopModel.materials.ComputerScreen
-  // console.log(mat2)
-  mat2.metalness = 0.9
-  mat2.roughness = 0.3
-  mat2.color = new THREE.Color('skyblue')
-  mat2.emissive = new THREE.Color('white')
-  mat2.emissiveIntensity = 0.6
-  mat2.envMap = envMap
-  mat2.lightProbeIntensity = 1.0
-  mat2.directionalLightIntensity = 0.2
-  mat2.envMapIntensity = 1
-  // mat2.wireframe = true
-  // mat2.bumpMap = texture
-  // mat2.bumpScale = 0.003
-
-  // mat2.map = null
+  const screenMaterial = laptopModel.materials.ComputerScreen
+  // console.log(screenMaterial)
+  screenMaterial.metalness = 0.8
+  screenMaterial.roughness = 0.4
+  screenMaterial.color = new THREE.Color('skyblue')
+  screenMaterial.emissive = new THREE.Color('white')
+  screenMaterial.emissiveIntensity = 0.6
+  screenMaterial.envMap = envMap
+  screenMaterial.lightProbeIntensity = 1
+  screenMaterial.directionalLightIntensity = 0.2
+  screenMaterial.envMapIntensity = isLaptopOpened ? 1 : 0.6
+  // screenMaterial.wireframe = true
+  // screenMaterial.bumpMap = texture
+  // screenMaterial.bumpScale = 0.003
+  // screenMaterial.map = null
 
   return (
-    //TODO: make responsive with scale
     <group
       ref={laptopRef}
       rotation={[0, Math.PI, 0]}
@@ -182,7 +178,7 @@ export default function Laptop({
           setHovered(true)
         }
       }}
-      onPointerOut={e => setHovered(false)}
+      onPointerOut={() => setHovered(false)}
     >
       <group
         onClick={e => {
@@ -199,28 +195,13 @@ export default function Laptop({
         }}
       >
         <mesh
-          material={mat1}
-          // material={laptopModel.materials.ComputerFrame}
+          material={frameMaterial as THREE.Material}
           geometry={laptopModel.nodes.Frame_ComputerFrame_0.geometry}
           rotation-x={-Math.PI / 2}
           scale={[10, 10, 10]}
-          // onPointerOver={e => (e.stopPropagation(), setHovered(true))}
-          // onPointerOut={e => setHovered(false)}
-          // onClick={e => {
-          //   e.stopPropagation()
-          //   setIsOpeningClosing(true)
-          //   dispatch({
-          //     type: Actions.TOGGLE_LAPTOP_OPENED,
-          //   })
-          //   dispatch({
-          //     type: Actions.SET_BLINKING,
-          //     payload: false,
-          //   })
-          // }}
         />
         <animated.mesh
-          material={mat2}
-          // material={laptopModel.materials.ComputerScreen}
+          material={screenMaterial as THREE.Material}
           geometry={laptopModel.nodes.Screen_ComputerScreen_0.geometry}
           rotation-y={Math.PI}
           rotation-x={springs['rotation-x']}

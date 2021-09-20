@@ -2,6 +2,7 @@ import {
   GizmoHelper as GizmoHelperDREI,
   GizmoViewport,
 } from '@react-three/drei'
+import { SHOW_HELPERS } from './config'
 
 export const GizmoHelper = () => (
   <GizmoHelperDREI
@@ -11,9 +12,11 @@ export const GizmoHelper = () => (
       null
     }}
   >
-    <GizmoViewport
-      axisColors={['#f7867e', '#7ef782', '#827ef7']}
-      labelColor='black'
-    />
+    {SHOW_HELPERS && (
+      <GizmoViewport
+        axisColors={['#f7867e', '#7ef782', '#827ef7']}
+        labelColor='black'
+      />
+    )}
   </GizmoHelperDREI>
 )

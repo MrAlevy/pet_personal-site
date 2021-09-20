@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Actions, ActionType } from '../Context/Context'
 import useContext from '../Context/useContext'
 import {
@@ -19,8 +19,9 @@ import {
 } from './utils'
 
 export default function Scene2() {
-  const [resizeTrigger, setResizeTrigger] = React.useState(false)
+  const [resizeTrigger, setResizeTrigger] = useState(false)
   const { context, dispatch } = useContext()
+
   //eslint-disable-next-line react-hooks/exhaustive-deps
   const dispatchCallback = useCallback(dispatch, [])
 
@@ -208,10 +209,7 @@ function Scene2Generic<
       className='absolute w-full flex justify-center'
       style={{
         zIndex: 99999,
-        // border: '1px solid yellow',
       }}
     />
   )
 }
-
-//TODO: animating words changing
