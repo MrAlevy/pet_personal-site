@@ -1,7 +1,10 @@
 import {
   GizmoHelper as GizmoHelperDREI,
   GizmoViewport,
+  useHelper,
 } from '@react-three/drei'
+import { MutableRefObject } from 'react'
+import * as THREE from 'three'
 import { SHOW_HELPERS } from './config'
 
 export const GizmoHelper = () => (
@@ -20,3 +23,29 @@ export const GizmoHelper = () => (
     )}
   </GizmoHelperDREI>
 )
+
+export const LightHelpers = ({
+  refs,
+  disabled,
+}: {
+  refs: {
+    spotLight: MutableRefObject<undefined>
+    ambientLight: MutableRefObject<undefined>
+  }
+  disabled: boolean
+}) => {
+  useHelper(
+    refs.spotLight,
+    SHOW_HELPERS && !disabled ? THREE.SpotLightHelper : THREE.PointLightHelper,
+    0,
+    '#ffffff'
+  )
+  useHelper(
+    refs.ambientLight,
+    THREE.PointLightHelper,
+    SHOW_HELPERS && !disabled ? 0.1 : 0,
+    '#ff3c77'
+  )
+
+  return null
+}

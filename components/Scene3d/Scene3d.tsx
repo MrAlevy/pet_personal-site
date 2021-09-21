@@ -22,6 +22,7 @@ const Laptop = lazy(async () => {
 export default function Scene3d() {
   const context = useContext()
   const [cameraScaleFactor, setCameraScaleFactor] = useState(1)
+  const [isSmallSpinner, setIsSmallSpinner] = useState(false)
   const { isLaptopOpened, isBlinking } = context.context
 
   const resize = () => {
@@ -29,6 +30,11 @@ export default function Scene3d() {
       setCameraScaleFactor(1600 / window.innerWidth)
     } else if (cameraScaleFactor !== 1) {
       setCameraScaleFactor(1)
+    }
+    if (window.innerWidth < 400) {
+      setIsSmallSpinner(true)
+    } else {
+      setIsSmallSpinner(false)
     }
   }
 
@@ -47,7 +53,7 @@ export default function Scene3d() {
         makeDefault
         position={[0.5, 0.5, -4 * cameraScaleFactor]}
       />
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<Spinner small={isSmallSpinner} />}>
         <Laptop
           context={context}
           cameraScaleFactor={
@@ -57,7 +63,7 @@ export default function Scene3d() {
           }
         />
         {/* {isLaptopOpened && <FlyingWords />} */}
-        <Lights isBlinking={isBlinking} />
+        <Lights isLaptopOpened={isLaptopOpened} isBlinking={isBlinking} />
         <ContactShadows
           width={7}
           height={5}

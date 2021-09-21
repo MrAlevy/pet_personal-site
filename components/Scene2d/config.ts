@@ -28,8 +28,8 @@ export const CONNECTION_DISTANCE_MAX = 12
 export const CONNECTION_COLOR_1 = 'rgba(255,255,90,1)'
 export const CONNECTION_COLOR_2 = 'rgba(80,30,230,1)'
 export const CONNECTION_COLOR_3 = 'rgba(255,255,255,1)'
-export const CONNECTION_COLOR_1_OPENED = 'rgba(255,255,90,1)'
-export const CONNECTION_COLOR_2_OPENED = 'rgba(180,60,0,1)'
+export const CONNECTION_COLOR_1_OPENED = 'rgba(255,0,90,1)'
+export const CONNECTION_COLOR_2_OPENED = 'rgba(200,0,150,1)'
 export const CONNECTION_COLOR_3_OPENED = 'rgba(2,0,0,1)'
 
 // Effect - blink

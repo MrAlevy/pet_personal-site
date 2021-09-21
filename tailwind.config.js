@@ -6,9 +6,9 @@ module.exports = {
       backgroundSize: {
         '100%': '100% 100%',
       },
-      backgroundImage: theme => ({
-        'img-desktop': "url('/desktop.png')",
-        'img-start-menu': "url('/start-menu.png')",
+      backgroundImage: () => ({
+        'img-desktop': "url('/laptop/desktop.png')",
+        'img-start-menu': "url('/laptop/start-menu.png')",
       }),
     },
   },
