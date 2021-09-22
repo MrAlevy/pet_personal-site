@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { AppNames } from '../../utils/constants'
+import { APP_NAMES } from '../../config'
 import StartMenuButton from '../_UI/StartMenuButton'
 
 export default function StartMenu({
@@ -13,11 +13,11 @@ export default function StartMenu({
   closeLaptop,
   touchYouTube,
 }: {
-  activeApp: AppNames
-  expandedApps: AppNames[]
-  openedApps?: AppNames[]
-  setExpandedApps: React.Dispatch<React.SetStateAction<AppNames[]>>
-  setActiveApp: React.Dispatch<React.SetStateAction<AppNames>>
+  activeApp: APP_NAMES
+  expandedApps: APP_NAMES[]
+  openedApps?: APP_NAMES[]
+  setExpandedApps: React.Dispatch<React.SetStateAction<APP_NAMES[]>>
+  setActiveApp: React.Dispatch<React.SetStateAction<APP_NAMES>>
   setLaptopHovered: React.Dispatch<React.SetStateAction<boolean>>
   closeLaptop: () => void
   touchYouTube: () => void
@@ -66,7 +66,7 @@ export default function StartMenu({
               setActiveApp(appName)
             }
 
-            if (appName === AppNames.YouTube) touchYouTube()
+            if (appName === APP_NAMES.YouTube) touchYouTube()
           }}
         />
       ))}

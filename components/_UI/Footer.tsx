@@ -3,7 +3,7 @@ import { FaLinkedin } from 'react-icons/fa'
 import { GoMarkGithub } from 'react-icons/go'
 import { IoMail } from 'react-icons/io5'
 import useContext from '../Context/useContext'
-import { LINKS, PERSONAL } from '../source'
+import { LINKS, PERSONAL } from '../../config'
 
 const LinkTag = ({
   title,

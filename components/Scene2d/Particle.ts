@@ -14,19 +14,23 @@ export default class Particle {
   baseY: number
   color: string
   speedFactor: number
+  isSkeletonMode: boolean
 
-  constructor(x: number, y: number, color: string) {
+  constructor(x: number, y: number, color: string, isSkeletonMode: boolean) {
     this.x = x
     this.y = y
     this.baseX = this.x
     this.baseY = this.y
     this.color = color
     this.speedFactor = Math.random() * EXTENSION_ACCELERATION + 1
+    this.isSkeletonMode = isSkeletonMode
   }
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.color
-    ctx.fillRect(this.x, this.y, PARTICLE_SIZE, PARTICLE_SIZE)
+    !this.isSkeletonMode
+      ? ctx.fillRect(this.x, this.y, PARTICLE_SIZE, PARTICLE_SIZE)
+      : ctx.strokeRect(this.x, this.y, PARTICLE_SIZE, PARTICLE_SIZE)
   }
 
   update(cursor: Cursor, isBlinking: boolean) {

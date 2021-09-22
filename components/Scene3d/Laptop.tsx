@@ -16,7 +16,7 @@ import { useModel } from './useModel'
 
 export default function Laptop({
   context: {
-    context: { isLaptopOpened },
+    context: { isLaptopOpened, isSkeletonMode },
     dispatch,
   },
   cameraScaleFactor,
@@ -24,7 +24,7 @@ export default function Laptop({
   context: ReturnType<typeof useContext>
   cameraScaleFactor: number
 }) {
-  const { frame, screen } = useModel(isLaptopOpened)
+  const { frame, screen } = useModel(isLaptopOpened, isSkeletonMode)
   const laptopRef = useRef<GroupProps>()
   const [isOpeningClosing, setIsOpeningClosing] = useState(false)
   const [wasOpened, setWasOpened] = useState(false)
@@ -126,6 +126,13 @@ export default function Laptop({
     })
   }
 
+  // Turn on and off the skeleton mode
+  const handleToggleSkeletonMode = () => {
+    dispatch({
+      type: Actions.TOGGLE_SKELETON_MODE,
+    })
+  }
+
   return (
     <group
       ref={laptopRef}
@@ -155,9 +162,9 @@ export default function Laptop({
         <animated.mesh
           geometry={screen.geometry}
           material={screen.material}
-          rotation-y={Math.PI}
-          rotation-x={springs['rotation-x']}
           position={[0, -0.02, -1.021]}
+          rotation-x={springs['rotation-x']}
+          rotation-y={Math.PI}
           scale={[10, 10, 10]}
         >
           {(isLaptopOpened || wasOpened) && (
@@ -165,17 +172,19 @@ export default function Laptop({
               className='laptop-html-content'
               transform
               occlude
-              scale={[0.01, 0.01, 0.01]}
               position={[0, 0.1, 0.004]}
               rotation-y={Math.PI}
+              scale={[0.01, 0.01, 0.01]}
               style={{
                 opacity: '80%',
               }}
             >
               <LaptopScreen
                 isLaptopOpened={isLaptopOpened}
+                isSkeletonMode={isSkeletonMode}
                 setLaptopHovered={setHovered}
                 closeLaptop={handleCloseLaptop}
+                toggleSkeletonMode={handleToggleSkeletonMode}
               />
             </Html>
           )}

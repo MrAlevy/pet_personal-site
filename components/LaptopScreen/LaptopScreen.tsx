@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { AppNames } from '../../utils/constants'
+import { APP_NAMES } from '../../config'
 import Chrome from './Apps/Chrome'
 import VSCode from './Apps/VSCode'
 import YouTube from './Apps/YouTube'
@@ -9,30 +9,34 @@ import StartMenu from './StartMenu'
 
 export default function LaptopScreen({
   isLaptopOpened,
+  isSkeletonMode,
   setLaptopHovered,
   closeLaptop,
+  toggleSkeletonMode,
 }: {
   isLaptopOpened: boolean
+  isSkeletonMode: boolean
   setLaptopHovered: React.Dispatch<React.SetStateAction<boolean>>
   closeLaptop: () => void
+  toggleSkeletonMode: () => void
 }) {
-  const [expandedApps, setExpandedApps] = useState([AppNames.Chrome])
-  const [activeApp, setActiveApp] = useState(AppNames.Chrome)
+  const [expandedApps, setExpandedApps] = useState([APP_NAMES.Chrome])
+  const [activeApp, setActiveApp] = useState(APP_NAMES.Chrome)
   const [youTubeTouched, setYouTubeTouched] = useState(false)
 
-  const openedApps = [AppNames.Chrome, AppNames.VSCode, AppNames.YouTube]
+  const openedApps = [APP_NAMES.Chrome, APP_NAMES.VSCode, APP_NAMES.YouTube]
   const appsContent = [
     {
-      name: AppNames.Chrome,
+      name: APP_NAMES.Chrome,
       content: <Chrome />,
     },
     {
-      name: AppNames.VSCode,
+      name: APP_NAMES.VSCode,
       content: <VSCode />,
     },
     {
-      name: AppNames.YouTube,
-      content: (expandedApps.includes(AppNames.YouTube) || youTubeTouched) && (
+      name: APP_NAMES.YouTube,
+      content: (expandedApps.includes(APP_NAMES.YouTube) || youTubeTouched) && (
         <YouTube />
       ),
     },

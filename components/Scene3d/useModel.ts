@@ -16,46 +16,36 @@ type Model = GLTF & {
   }
 }
 
-export function useModel(isLaptopOpened: boolean) {
+export function useModel(isLaptopOpened: boolean, isSkeletonMode: boolean) {
   const laptopModel = useGLTF('/laptop/laptop.glb') as Model
 
   const bumpMap = new THREE.TextureLoader().load('/textures/bump-map.jpg')
   const envMap = useCubeTexture(
-    ['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg', 'negz.jpg'],
+    ['env.jpg', 'env.jpg', 'env.jpg', 'env.jpg', 'env.jpg', 'env.jpg'],
     { path: '/textures/' }
   )
-  // const envMap = useCubeTexture(
-  //   ['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'],
-  //   { path: '/textures/' }
-  // )
 
   const frameMaterial = laptopModel.materials.ComputerFrame
-  // console.log(frameMaterial)
   frameMaterial.metalness = 0.8
   frameMaterial.roughness = 0.4
-  frameMaterial.color = new THREE.Color('skyblue')
+  frameMaterial.color = new THREE.Color('#d0d5db')
   frameMaterial.emissive = new THREE.Color('#C6C6C6')
   frameMaterial.emissiveIntensity = 1.8
   frameMaterial.bumpMap = bumpMap
   frameMaterial.bumpScale = 0.0002
   frameMaterial.envMap = envMap
-  frameMaterial.envMapIntensity = isLaptopOpened ? 1 : 0.6
-  frameMaterial.lightProbeIntensity = 1.0
-  frameMaterial.directionalLightIntensity = 0.2
-  // frameMaterial.wireframe = true
+  frameMaterial.envMapIntensity = isLaptopOpened ? 1.5 : 0.5
+  frameMaterial.wireframe = isSkeletonMode
 
   const screenMaterial = laptopModel.materials.ComputerScreen
-  // console.log(screenMaterial)
   screenMaterial.metalness = 0.8
   screenMaterial.roughness = 0.35
-  screenMaterial.color = new THREE.Color('skyblue')
+  screenMaterial.color = new THREE.Color('#d0d5db')
   screenMaterial.bumpMap = bumpMap
   screenMaterial.bumpScale = isLaptopOpened ? 0 : 0.0001
   screenMaterial.envMap = envMap
-  screenMaterial.envMapIntensity = isLaptopOpened ? 1 : 0.6
-  screenMaterial.lightProbeIntensity = 1
-  screenMaterial.directionalLightIntensity = 0.2
-  // screenMaterial.wireframe = true
+  screenMaterial.envMapIntensity = isLaptopOpened ? 2.2 : 0.5
+  screenMaterial.wireframe = isSkeletonMode
 
   return {
     frame: {

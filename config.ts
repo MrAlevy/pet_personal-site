@@ -1,3 +1,9 @@
+export enum APP_NAMES {
+  Chrome = 'CHROME',
+  VSCode = 'VSCODE',
+  YouTube = 'YOUTUBE',
+}
+
 export const PERSONAL = {
   NAME: 'Alexander',
   SURNAME: 'Vygodchikov',

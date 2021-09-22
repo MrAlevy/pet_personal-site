@@ -20,7 +20,10 @@ import {
 
 export default function Scene2() {
   const [resizeTrigger, setResizeTrigger] = useState(false)
-  const { context, dispatch } = useContext()
+  const {
+    context: { isLaptopOpened, isSkeletonMode },
+    dispatch,
+  } = useContext()
 
   //eslint-disable-next-line react-hooks/exhaustive-deps
   const dispatchCallback = useCallback(dispatch, [])
@@ -38,7 +41,8 @@ export default function Scene2() {
 
   return (
     <Scene2dMemo<typeof dispatch>
-      isLaptopOpened={context.isLaptopOpened}
+      isLaptopOpened={isLaptopOpened}
+      isSkeletonMode={isSkeletonMode}
       dispatch={dispatchCallback}
       resizeTrigger={resizeTrigger}
     />
@@ -49,13 +53,19 @@ const Scene2dMemo = React.memo(Scene2Generic) as typeof Scene2Generic
 
 interface Props<TDispatch> {
   isLaptopOpened: boolean
+  isSkeletonMode: boolean
   dispatch: TDispatch
   resizeTrigger: boolean
 }
 
 function Scene2Generic<
   TDispatch extends (action: ActionType) => void | undefined
->({ isLaptopOpened, dispatch, resizeTrigger }: Props<TDispatch>) {
+>({
+  isLaptopOpened,
+  isSkeletonMode,
+  dispatch,
+  resizeTrigger,
+}: Props<TDispatch>) {
   resizeTrigger
 
   const text = 'hello there!'
@@ -111,7 +121,8 @@ function Scene2Generic<
       imageData,
       displacementX,
       scale,
-      isLaptopOpened
+      isLaptopOpened,
+      isSkeletonMode
     )
 
     // Sets for blink effect

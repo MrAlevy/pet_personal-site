@@ -15,15 +15,15 @@ export default function Lights({
     <>
       <spotLight
         ref={spotLightRef}
-        color='#fff0f0'
         position={[0, 3, 0]}
-        intensity={isBlinking ? 1.3 : isLaptopOpened ? 0.2 : 0.5}
+        color='#fff0f0'
+        intensity={isBlinking ? 1.3 : isLaptopOpened ? 0.3 : 0.5}
       />
       <ambientLight
         ref={ambientLightRef}
-        intensity={isBlinking ? 0.7 : 0.2}
         position={[0, 2, 0]}
-        color='#ff89f5'
+        color={isLaptopOpened ? '#fff0f0' : '#ff89f5'}
+        intensity={isBlinking ? 0.7 : isLaptopOpened ? 0.5 : 0.2}
       />
       <LightHelpers
         refs={{ spotLight: spotLightRef, ambientLight: ambientLightRef }}

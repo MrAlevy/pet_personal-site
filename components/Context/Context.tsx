@@ -8,11 +8,13 @@ export type ActionType = {
 export enum Actions {
   TOGGLE_LAPTOP_OPENED,
   SET_BLINKING,
+  TOGGLE_SKELETON_MODE,
 }
 
 const initialState = {
   isLaptopOpened: false,
   isBlinking: false,
+  isSkeletonMode: false,
 }
 
 const reducer = (
@@ -24,6 +26,8 @@ const reducer = (
       return { ...state, isLaptopOpened: !state.isLaptopOpened }
     case Actions.SET_BLINKING:
       return { ...state, isBlinking: action.payload }
+    case Actions.TOGGLE_SKELETON_MODE:
+      return { ...state, isSkeletonMode: !state.isSkeletonMode }
     default:
       throw new Error(`Unknown action: ${action.type}`)
   }

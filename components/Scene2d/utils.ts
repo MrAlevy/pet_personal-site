@@ -25,7 +25,8 @@ export const makeParticles = (
   imageData: ImageData,
   xStart: number,
   scale: number,
-  isLaptopOpened: boolean
+  isLaptopOpened: boolean,
+  isSkeletonMode: boolean
 ) => {
   const particleArray = []
   // Look on each pixel and create particles for those of which the condition of the minimum opacity ALPHA_MIN is satisfied
@@ -39,7 +40,8 @@ export const makeParticles = (
           new Particle(
             positionX,
             positionY,
-            isLaptopOpened ? PARTICLE_COLOR_OPENED : PARTICLE_COLOR
+            isLaptopOpened ? PARTICLE_COLOR_OPENED : PARTICLE_COLOR,
+            isSkeletonMode
           )
         )
       }
