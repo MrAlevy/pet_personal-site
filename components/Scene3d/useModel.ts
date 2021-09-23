@@ -34,7 +34,7 @@ export function useModel(isLaptopOpened: boolean, isSkeletonMode: boolean) {
   frameMaterial.bumpMap = bumpMap
   frameMaterial.bumpScale = 0.0002
   frameMaterial.envMap = envMap
-  frameMaterial.envMapIntensity = isLaptopOpened ? 1.5 : 0.5
+  frameMaterial.envMapIntensity = isLaptopOpened ? 1.5 : 0.3
   frameMaterial.wireframe = isSkeletonMode
 
   const screenMaterial = laptopModel.materials.ComputerScreen
@@ -44,7 +44,7 @@ export function useModel(isLaptopOpened: boolean, isSkeletonMode: boolean) {
   screenMaterial.bumpMap = bumpMap
   screenMaterial.bumpScale = isLaptopOpened ? 0 : 0.0001
   screenMaterial.envMap = envMap
-  screenMaterial.envMapIntensity = isLaptopOpened ? 2.2 : 0.5
+  screenMaterial.envMapIntensity = isLaptopOpened ? 1.5 : 0.3
   screenMaterial.wireframe = isSkeletonMode
 
   return {

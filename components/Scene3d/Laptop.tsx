@@ -133,6 +133,14 @@ export default function Laptop({
     })
   }
 
+  // Change Scene2d text
+  const handleChangeScene2dText = (text: string) => {
+    dispatch({
+      type: Actions.CHANGE_SCENE_2D_TEXT,
+      payload: text,
+    })
+  }
+
   return (
     <group
       ref={laptopRef}
@@ -176,7 +184,7 @@ export default function Laptop({
               rotation-y={Math.PI}
               scale={[0.01, 0.01, 0.01]}
               style={{
-                opacity: '80%',
+                opacity: '85%',
               }}
             >
               <LaptopScreen
@@ -185,6 +193,7 @@ export default function Laptop({
                 setLaptopHovered={setHovered}
                 closeLaptop={handleCloseLaptop}
                 toggleSkeletonMode={handleToggleSkeletonMode}
+                changeScene2dText={handleChangeScene2dText}
               />
             </Html>
           )}

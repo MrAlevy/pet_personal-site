@@ -14,3 +14,6 @@ export const LINKS = {
   EMAIL: 'avygodchikov@gmail.com',
   GITHUB: 'https://github.com/MrAlevy/pet_personal-site',
 }
+
+export const YOUTUBE_IFRAME =
+  'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'

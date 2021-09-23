@@ -2,6 +2,7 @@
 export const CANVAS_ID = 'canvas-text-greeting'
 export const CANVAS_HEIGHT = 160
 export const DISPLACEMENT_Y = 30
+export const TEXT = 'hello there!'
 
 // Text
 export const FONT_SIZE = 27

@@ -10,6 +10,7 @@ import { MAX_WIDTH, OPEN_Y_DECREASE } from './config'
 import { GizmoHelper } from './Helpers'
 import Lights from './Lights'
 import Spinner from './Spinner'
+import FlyingWords from './FlyingWords'
 
 const Laptop = lazy(async () => {
   const [moduleExports] = await Promise.all([
@@ -62,7 +63,7 @@ export default function Scene3d() {
               : cameraScaleFactor * 1.1
           }
         />
-        {/* {isLaptopOpened && <FlyingWords />} */}
+        {isLaptopOpened && <FlyingWords />}
         <Lights isLaptopOpened={isLaptopOpened} isBlinking={isBlinking} />
         <ContactShadows
           width={7}
@@ -79,6 +80,7 @@ export default function Scene3d() {
         maxPolarAngle={Math.PI / 2.3}
         minDistance={1.5 * cameraScaleFactor}
         maxDistance={6.5 * cameraScaleFactor}
+        enablePan={false}
       />
       <GizmoHelper />
     </Canvas>

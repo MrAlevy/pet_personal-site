@@ -21,7 +21,7 @@ import {
 export default function Scene2() {
   const [resizeTrigger, setResizeTrigger] = useState(false)
   const {
-    context: { isLaptopOpened, isSkeletonMode },
+    context: { isLaptopOpened, isSkeletonMode, scene2dText },
     dispatch,
   } = useContext()
 
@@ -43,6 +43,7 @@ export default function Scene2() {
     <Scene2dMemo<typeof dispatch>
       isLaptopOpened={isLaptopOpened}
       isSkeletonMode={isSkeletonMode}
+      scene2dText={scene2dText}
       dispatch={dispatchCallback}
       resizeTrigger={resizeTrigger}
     />
@@ -54,6 +55,7 @@ const Scene2dMemo = React.memo(Scene2Generic) as typeof Scene2Generic
 interface Props<TDispatch> {
   isLaptopOpened: boolean
   isSkeletonMode: boolean
+  scene2dText: string
   dispatch: TDispatch
   resizeTrigger: boolean
 }
@@ -63,12 +65,14 @@ function Scene2Generic<
 >({
   isLaptopOpened,
   isSkeletonMode,
+  scene2dText,
   dispatch,
   resizeTrigger,
 }: Props<TDispatch>) {
   resizeTrigger
 
-  const text = 'hello there!'
+  const text = scene2dText || 'hello there!'
+
   const isUnmount = {
     value: false,
   }
@@ -80,6 +84,7 @@ function Scene2Generic<
     // Get canvas
     const canvas = document.querySelector(`#${CANVAS_ID}`) as HTMLCanvasElement
     const ctx = canvas?.getContext('2d')
+
     if (!canvas || !ctx) return
 
     // Canvas params

@@ -9,6 +9,7 @@ module.exports = {
       backgroundImage: () => ({
         'img-desktop': "url('/laptop/desktop.png')",
         'img-start-menu': "url('/laptop/start-menu.png')",
+        'img-vs-code': "url('/laptop/vs-code.png')",
       }),
     },
   },

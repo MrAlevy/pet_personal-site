@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { APP_NAMES } from '../../config'
-import Chrome from './Apps/Chrome'
-import VSCode from './Apps/VSCode'
-import YouTube from './Apps/YouTube'
+import { APP_NAMES, YOUTUBE_IFRAME } from '../../config'
+import VSCodeApp from '../VSCodeApp/VSCodeApp'
 import AppWindow from './AppWindow'
 import StartMenu from './StartMenu'
 
@@ -13,12 +11,14 @@ export default function LaptopScreen({
   setLaptopHovered,
   closeLaptop,
   toggleSkeletonMode,
+  changeScene2dText,
 }: {
   isLaptopOpened: boolean
   isSkeletonMode: boolean
   setLaptopHovered: React.Dispatch<React.SetStateAction<boolean>>
   closeLaptop: () => void
   toggleSkeletonMode: () => void
+  changeScene2dText: (text: string) => void
 }) {
   const [expandedApps, setExpandedApps] = useState([APP_NAMES.Chrome])
   const [activeApp, setActiveApp] = useState(APP_NAMES.Chrome)
@@ -28,16 +28,27 @@ export default function LaptopScreen({
   const appsContent = [
     {
       name: APP_NAMES.Chrome,
-      content: <Chrome />,
+      content: (
+        <div className='bg-yellow-200 h-full w-full'>
+          <button onClick={toggleSkeletonMode}>
+            skeleton {isSkeletonMode ? 'ON' : 'OFF'}
+          </button>
+        </div>
+      ),
     },
     {
       name: APP_NAMES.VSCode,
-      content: <VSCode />,
+      content: (
+        <VSCodeApp
+          isActive={activeApp === APP_NAMES.VSCode}
+          changeScene2dText={changeScene2dText}
+        />
+      ),
     },
     {
       name: APP_NAMES.YouTube,
       content: (expandedApps.includes(APP_NAMES.YouTube) || youTubeTouched) && (
-        <YouTube />
+        <iframe title='frame' src={YOUTUBE_IFRAME} className='w-full h-full' />
       ),
     },
   ]
