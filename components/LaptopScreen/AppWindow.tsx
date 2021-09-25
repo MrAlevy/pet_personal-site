@@ -13,7 +13,7 @@ export default function AppWindow({
 }) {
   return (
     <div
-      className='bg-red-500 absolute w-full'
+      className='bg-gray-900 absolute w-full'
       style={{
         height: '95%',
         transition: '0.3s all ease-in-out',

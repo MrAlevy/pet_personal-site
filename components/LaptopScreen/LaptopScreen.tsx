@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { APP_NAMES, YOUTUBE_IFRAME } from '../../config'
-import VSCodeApp from '../VSCodeApp/VSCodeApp'
+import AppChrome from './AppChrome'
+import AppVSCode from './AppVSCode'
 import AppWindow from './AppWindow'
 import StartMenu from './StartMenu'
 
@@ -29,17 +30,16 @@ export default function LaptopScreen({
     {
       name: APP_NAMES.Chrome,
       content: (
-        <div className='bg-yellow-200 h-full w-full'>
-          <button onClick={toggleSkeletonMode}>
-            skeleton {isSkeletonMode ? 'ON' : 'OFF'}
-          </button>
-        </div>
+        <AppChrome
+          isSkeletonMode={isSkeletonMode}
+          toggleSkeletonMode={toggleSkeletonMode}
+        />
       ),
     },
     {
       name: APP_NAMES.VSCode,
       content: (
-        <VSCodeApp
+        <AppVSCode
           isActive={activeApp === APP_NAMES.VSCode}
           changeScene2dText={changeScene2dText}
         />
