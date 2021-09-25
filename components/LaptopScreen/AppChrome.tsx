@@ -1,7 +1,7 @@
 import React from 'react'
 import Skull from '../_UI/Skull'
 import Image from 'next/image'
-import ava from '../../public/personal/ava.jpg'
+import ava from '../../public/personal/avatar.jpg'
 
 export default function AppChrome({
   isSkeletonMode,

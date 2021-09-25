@@ -9,7 +9,7 @@ const COLOR_LAPTOP_OPENED = '#e8d197'
 const COLOR_LAPTOP_CLOSED = '#35004b'
 const COLOR_BLINK = '#7000a0'
 
-const Home: NextPage = () => {
+const Document: NextPage = () => {
   const {
     context: { isLaptopOpened, isBlinking },
   } = useContext()
@@ -40,6 +40,7 @@ const Home: NextPage = () => {
           href='/favicon-16x16.png'
         />
         <link rel='manifest' href='/site.webmanifest' />
+        {/* eslint-disable-next-line */}
         <link
           href='https://fonts.googleapis.com/css?family=Fira+Code'
           rel='stylesheet'
@@ -82,4 +83,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Document
