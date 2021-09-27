@@ -20,7 +20,7 @@ const Document: NextPage = () => {
         <title>Alex Vygodchikov</title>
         <meta
           name='description'
-          content='Alexander Vygodchikov personal page'
+          content='Alexander Vygodchikov - fullstack web developer'
         />
         <link
           rel='apple-touch-icon'
@@ -39,6 +39,7 @@ const Document: NextPage = () => {
           sizes='16x16'
           href='/favicon-16x16.png'
         />
+        <link rel='icon' type='image/x-icon' href='favicon.ico' />
         <link rel='manifest' href='/site.webmanifest' />
         {/* eslint-disable-next-line */}
         <link
@@ -60,22 +61,6 @@ const Document: NextPage = () => {
         }}
       >
         <Scene2d />
-        {/* {
-          <div
-            style={{
-              color: 'rgb(195 53 255)',
-              font: `bold 27px Verdana`,
-              position: 'absolute',
-              top: '150px',
-              fontSize: '78px',
-              display: 'flex',
-              justifyContent: 'center',
-              width: '100%',
-            }}
-          >
-            hello there!
-          </div>
-        } */}
         <Scene3d />
         <Footer />
       </div>

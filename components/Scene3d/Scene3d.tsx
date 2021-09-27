@@ -63,7 +63,7 @@ export default function Scene3d() {
               : cameraScaleFactor * 1.1
           }
         />
-        {isLaptopOpened && <FlyingWords />}
+        {/* {isLaptopOpened && <FlyingWords />} */}
         <Lights isLaptopOpened={isLaptopOpened} isBlinking={isBlinking} />
         <ContactShadows
           width={7}

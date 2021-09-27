@@ -20,7 +20,7 @@ export default function Skull({
 
   return (
     <motion.div
-      className='text-gray-900 hover:text-gray-700'
+      className='text-gray-400 hover:text-yellow-300'
       onClick={() => {
         if (isSkeletonMode) {
           animation.rotateY = rotation
@@ -40,7 +40,7 @@ export default function Skull({
         position: 'absolute',
         right: 0,
         bottom: 0,
-        padding: '30px 50px',
+        margin: '30px 50px',
       }}
     >
       {isSkeletonMode ? (
