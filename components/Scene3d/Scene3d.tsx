@@ -7,10 +7,10 @@ import { Canvas } from '@react-three/fiber'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import useContext from '../Context/useContext'
 import { MAX_WIDTH, OPEN_Y_DECREASE } from './config'
+import FlyingWords from './FlyingWords'
 import { GizmoHelper } from './Helpers'
 import Lights from './Lights'
 import Spinner from './Spinner'
-import FlyingWords from './FlyingWords'
 
 const Laptop = lazy(async () => {
   const [moduleExports] = await Promise.all([
@@ -63,7 +63,7 @@ export default function Scene3d() {
               : cameraScaleFactor * 1.1
           }
         />
-        {/* {isLaptopOpened && <FlyingWords />} */}
+        {isLaptopOpened && <FlyingWords />}
         <Lights isLaptopOpened={isLaptopOpened} isBlinking={isBlinking} />
         <ContactShadows
           width={7}

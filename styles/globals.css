@@ -17,6 +17,10 @@
   padding: 0;
 }
 
+.avatar {
+  border-radius: 2px;
+}
+
 /* #canvas1 {
   position: absolute;
   top: 0;

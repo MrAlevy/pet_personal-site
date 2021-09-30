@@ -7,7 +7,7 @@ module.exports = {
         '100%': '100% 100%',
       },
       backgroundImage: () => ({
-        'img-desktop': "url('/laptop/desktop.png')",
+        'img-desktop': "url('/laptop/desktop.jpg')",
         'img-start-menu': "url('/laptop/start-menu.png')",
         'img-vs-code': "url('/laptop/vs-code.png')",
       }),

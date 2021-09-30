@@ -2,8 +2,28 @@ import dayjs from 'dayjs'
 import { FaLinkedin } from 'react-icons/fa'
 import { GoMarkGithub } from 'react-icons/go'
 import { IoMail } from 'react-icons/io5'
-import useContext from '../Context/useContext'
 import { LINKS, PERSONAL } from '../../config'
+import useContext from '../Context/useContext'
+
+const tags = [
+  {
+    title: 'linkedin',
+    link: LINKS.LINKEDIN,
+    icon: <FaLinkedin />,
+  },
+  {
+    title: 'github',
+    link: LINKS.GITHUB,
+    icon: <GoMarkGithub />,
+  },
+  {
+    title: LINKS.EMAIL,
+    link: `mailto: ${LINKS.EMAIL}`,
+    icon: <IoMail />,
+  },
+]
+
+const year = dayjs().get('year')
 
 const LinkTag = ({
   title,
@@ -30,26 +50,6 @@ const LinkTag = ({
     </a>
   )
 }
-
-const tags = [
-  {
-    title: 'linkedin',
-    link: LINKS.LINKEDIN,
-    icon: <FaLinkedin />,
-  },
-  {
-    title: 'github',
-    link: LINKS.GITHUB,
-    icon: <GoMarkGithub />,
-  },
-  {
-    title: LINKS.EMAIL,
-    link: `mailto: ${LINKS.EMAIL}`,
-    icon: <IoMail />,
-  },
-]
-
-const year = dayjs().get('year')
 
 export default function Footer() {
   const {

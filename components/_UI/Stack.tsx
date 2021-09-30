@@ -1,16 +1,16 @@
+import { ReactElement } from 'react'
+import { IoIosArrowRoundForward } from 'react-icons/io'
+import { IoTriangleOutline } from 'react-icons/io5'
 import {
+  SiDocker,
+  SiFramer,
+  SiHeroku,
   SiNextDotJs,
   SiReact,
-  SiTypescript,
-  SiFramer,
   SiTailwindcss,
-  SiDocker,
-  SiHeroku,
+  SiTypescript,
 } from 'react-icons/si'
-import { IoTriangleOutline } from 'react-icons/io5'
-import { IoIosArrowRoundForward } from 'react-icons/io'
 import { VscGithubAction } from 'react-icons/vsc'
-import { ReactElement } from 'react'
 
 const technologies = [
   {
@@ -40,30 +40,54 @@ const technologies = [
 ]
 
 const SectName = ({ name }: { name: string }) => (
-  <div className='text-3xl font-medium  '>{name}</div>
+  <div className='text-3xl font-medium mb-3'>{name}</div>
 )
 
 const Technology = ({ name, icon }: { name: string; icon: ReactElement }) => (
-  <div className='flex items-center'>
+  <div className='flex items-center mb-2'>
     <div className='flex items-center text-3xl mr-5 text-gray-900'>{icon}</div>
     <div className='text-2xl'>{name}</div>
   </div>
 )
 
+const TechnologyCurved = ({
+  name,
+  icon,
+}: {
+  name: string
+  icon: ReactElement
+}) => (
+  <div className='flex items-center mb-2'>
+    <div className='flex items-center text-3xl mr-5 text-gray-900'>{icon}</div>
+    <svg viewBox='0 -800 600 800' style={{ marginTop: -265 }}>
+      <path
+        id='curve'
+        fill='transparent'
+        d='M 0 0 L 320 0 Q 500 0 530 -180 Q 540 -230 570 -790'
+      />
+      <text width='500' style={{ fontSize: 67 }}>
+        <textPath fill='rgba(249, 250, 251)' xlinkHref='#curve'>
+          {name}
+        </textPath>
+      </text>
+    </svg>
+  </div>
+)
+
 export default function Stack() {
   return (
-    <div>
+    <div style={{ width: 400, marginRight: -40 }}>
       <div>
-        <SectName name='Stack: ' />
+        <SectName name='Stack:' />
         <div className='flex flex-col'>
           {technologies.map(e => (
             <Technology key={e.name} name={e.name} icon={e.icon} />
           ))}
         </div>
       </div>
-      <div>
-        <SectName name='CI/CD: ' />
-        <Technology
+      <div className='mt-3'>
+        <SectName name='CI/CD:' />
+        <TechnologyCurved
           name='GitHub Actions + Docker + Heroku'
           icon={
             <>

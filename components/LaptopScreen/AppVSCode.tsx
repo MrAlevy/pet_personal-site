@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { TEXT } from '../Scene2d/config'
 
 export default function AppVSCode({ isActive, changeScene2dText }: any) {

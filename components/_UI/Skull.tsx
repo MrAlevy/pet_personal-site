@@ -20,7 +20,7 @@ export default function Skull({
 
   return (
     <motion.div
-      className='text-gray-400 hover:text-yellow-300'
+      className='absolute text-gray-400 hover:text-yellow-300 cursor-pointer'
       onClick={() => {
         if (isSkeletonMode) {
           animation.rotateY = rotation
@@ -35,12 +35,10 @@ export default function Skull({
       }}
       animate={controls}
       style={{
-        cursor: 'pointer',
         width: 'fit-content',
-        position: 'absolute',
+        margin: '30px 50px',
         right: 0,
         bottom: 0,
-        margin: '30px 50px',
       }}
     >
       {isSkeletonMode ? (
