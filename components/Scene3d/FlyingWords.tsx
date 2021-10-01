@@ -1,100 +1,65 @@
 import { Text } from '@react-three/drei'
-// import { useFrame } from '@react-three/fiber'
-// import * as THREE from 'three'
+import { EulerProps, GroupProps, useFrame } from '@react-three/fiber'
 import { useRef } from 'react'
+import * as THREE from 'three'
 
-export default function FlyingWords(props: any) {
-  const group = useRef()
-  const rf1 = useRef()
-  const rf2 = useRef()
-  const rf3 = useRef()
+const COLORS = ['#510770', '#660707', '#104912', '#0c2091', '#c52700']
 
-  // useFrame(state => {
-  //   // const t = state.clock.getElapsedTime()
+const getColor = () => COLORS[Math.floor(Math.random() * COLORS.length)]
+const getOpacity = (word: string) => Math.random() * (4 / word.length) + 0.5
 
-  //   rf1.current.position.x = THREE.MathUtils.damp(
-  //     rf1.current.position.x,
-  //     -10,
-  //     0.000001,
-  //     10
-  //   )
-  //   rf2.current.position.x = THREE.MathUtils.damp(
-  //     rf2.current.position.x,
-  //     -10,
-  //     0.000005,
-  //     10
-  //   )
-  //   rf3.current.position.x = THREE.MathUtils.damp(
-  //     rf3.current.position.x,
-  //     -10,
-  //     0.000009,
-  //     10
-  //   )
-  // })
+const Word = ({ word }: { word: string }) => (
+  <Text
+    color={getColor()}
+    fillOpacity={getOpacity(word)}
+    anchorX='center'
+    anchorY='middle'
+    position={[
+      (Math.random() * 7 + 2) * 2 - 3,
+      (Math.random() * 10 + 2) * 1 - 3,
+      (Math.random() * 1.5 + 2) * 2 - 6,
+    ]}
+  >
+    {word}
+  </Text>
+)
+
+export default function FlyingWords({ wordsArray }: { wordsArray: string[] }) {
+  const leftGroupRef = useRef<GroupProps>()
+  const rightGroupRef = useRef<GroupProps>()
+
+  useFrame(state => {
+    const t = state.clock.getElapsedTime()
+
+    const rotation = THREE.MathUtils.lerp(0, Math.cos(t / 2) / 10, 0.2)
+
+    const rotationLeftGroup = leftGroupRef.current?.rotation as EulerProps
+    const rotationRightGroup = rightGroupRef.current?.rotation as EulerProps
+
+    rotationLeftGroup.x = rotation
+    rotationRightGroup.x = rotation
+  })
 
   return (
-    <group ref={group} {...props} rotation={[0, Math.PI, 0]} dispose={null}>
-      <group ref={rf1} {...props} dispose={null}>
-        {Array(50)
-          .fill(0)
-          .map((_, i) => (
-            <Text
-              ref={rf1}
-              key={i}
-              color='red'
-              anchorX='center'
-              anchorY='middle'
-              // position={[1, 1, 3]}
-              position={[
-                (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 6,
-              ]}
-            >
-              hello world!
-            </Text>
-          ))}
+    <>
+      <group
+        ref={leftGroupRef}
+        rotation={[0, -Math.PI / 2.4 + Math.PI, 0]}
+        position={[0, -5, 14]}
+      >
+        {wordsArray.slice(0, wordsArray.length / 2).map((word, i) => (
+          <Word key={i} word={word} />
+        ))}
       </group>
-      <group ref={rf2} {...props} dispose={null}>
-        {Array(50)
-          .fill(0)
-          .map((_, i) => (
-            <Text
-              key={i}
-              color='green'
-              anchorX='center'
-              anchorY='middle'
-              // position={[1, 1, 3]}
-              position={[
-                (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 6,
-              ]}
-            >
-              hello world!!
-            </Text>
-          ))}
+      <group
+        ref={rightGroupRef}
+        rotation={[0, Math.PI / 2.4 + Math.PI, 0]}
+        position={[5, -5, -2]}
+      >
+        {wordsArray.slice(wordsArray.length / 2).map((word, i) => (
+          <Word key={i} word={word} />
+        ))}
       </group>
-      <group ref={rf3} {...props} dispose={null}>
-        {Array(50)
-          .fill(0)
-          .map((_, i) => (
-            <Text
-              key={i}
-              color='blue'
-              anchorX='center'
-              anchorY='middle'
-              // position={[1, 1, 3]}
-              position={[
-                (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 3,
-                (Math.random() + 1) * 2 - 7,
-              ]}
-            >
-              hello world!!!
-            </Text>
-          ))}
-      </group>
-    </group>
+    </>
   )
 }

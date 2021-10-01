@@ -4,15 +4,24 @@ import useContext from '../components/Context/useContext'
 import Scene2d from '../components/Scene2d/Scene2d'
 import Scene3d from '../components/Scene3d/Scene3d'
 import Footer from '../components/_UI/Footer'
+import fs from 'fs'
 
 const COLOR_LAPTOP_OPENED = '#e8d197'
 const COLOR_LAPTOP_CLOSED = '#35004b'
 const COLOR_BLINK = '#7000a0'
 
-const Document: NextPage = () => {
+const Document: NextPage<{ wordsArray: string[] }> = ({ wordsArray }) => {
   const {
     context: { isLaptopOpened, isBlinking },
   } = useContext()
+
+  const wrapperStyle = {
+    backgroundColor: isLaptopOpened ? COLOR_LAPTOP_OPENED : COLOR_LAPTOP_CLOSED,
+    backgroundImage:
+      isBlinking && !isLaptopOpened
+        ? `radial-gradient(farthest-side at 50% 80px,${COLOR_BLINK} 0%, ${COLOR_LAPTOP_CLOSED} 100%)`
+        : '',
+  }
 
   return (
     <div className='h-screen w-screen'>
@@ -48,20 +57,9 @@ const Document: NextPage = () => {
         />
       </Head>
 
-      <div
-        className={`w-full h-full`}
-        style={{
-          backgroundColor: isLaptopOpened
-            ? COLOR_LAPTOP_OPENED
-            : COLOR_LAPTOP_CLOSED,
-          backgroundImage:
-            isBlinking && !isLaptopOpened
-              ? `radial-gradient(farthest-side at 50% 80px,${COLOR_BLINK} 0%, ${COLOR_LAPTOP_CLOSED} 100%)`
-              : '',
-        }}
-      >
+      <div className={`w-full h-full`} style={wrapperStyle}>
         <Scene2d />
-        <Scene3d />
+        <Scene3d wordsArray={wordsArray} />
         <Footer />
       </div>
     </div>
@@ -69,3 +67,16 @@ const Document: NextPage = () => {
 }
 
 export default Document
+
+export async function getStaticProps() {
+  // Make array of words from source code for the FlyingWords component
+  const file1 = fs.readFileSync('components/Scene2d/Scene2d.tsx')
+  const file2 = fs.readFileSync('components/Scene3d/Scene3d.tsx')
+  const wordsArray = (file1.toString() + file2.toString())
+    .replace(/(\r\n|\n|\r)/gm, ' ')
+    .split(' ')
+    .filter(e => e.length > 3)
+  return {
+    props: { wordsArray },
+  }
+}
