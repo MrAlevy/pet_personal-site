@@ -24,11 +24,19 @@ const Word = ({ word }: { word: string }) => (
   </Text>
 )
 
-export default function FlyingWords({ wordsArray }: { wordsArray: string[] }) {
+export default function FlyingWords({
+  wordsArray,
+  disabled,
+}: {
+  wordsArray: string[]
+  disabled: boolean
+}) {
   const leftGroupRef = useRef<GroupProps>()
   const rightGroupRef = useRef<GroupProps>()
 
   useFrame(state => {
+    if (disabled) return
+
     const t = state.clock.getElapsedTime()
 
     const rotation = THREE.MathUtils.lerp(0, Math.cos(t / 2) / 10, 0.2)
@@ -39,6 +47,8 @@ export default function FlyingWords({ wordsArray }: { wordsArray: string[] }) {
     rotationLeftGroup.x = rotation
     rotationRightGroup.x = rotation
   })
+
+  if (disabled) return null
 
   return (
     <>

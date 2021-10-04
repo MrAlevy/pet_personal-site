@@ -55,7 +55,7 @@ export default function Scene3d({ wordsArray }: { wordsArray: string[] }) {
     if (isSkeletonMode && isLaptopOpened) {
       setTimeout(() => {
         setShowFlyingWords(true)
-      }, 500)
+      }, 300)
     } else {
       setShowFlyingWords(false)
     }
@@ -78,7 +78,7 @@ export default function Scene3d({ wordsArray }: { wordsArray: string[] }) {
               : cameraScaleFactor * 1.1
           }
         />
-        {showFlyingWords && <FlyingWords wordsArray={wordsArray} />}
+        <FlyingWords wordsArray={wordsArray} disabled={!showFlyingWords} />
         <Lights isLaptopOpened={isLaptopOpened} isBlinking={isBlinking} />
         {!isSkeletonMode && (
           <ContactShadows
