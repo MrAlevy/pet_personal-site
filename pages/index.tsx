@@ -1,27 +1,15 @@
+import fs from 'fs'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import useContext from '../components/Context/useContext'
 import Scene2d from '../components/Scene2d/Scene2d'
 import Scene3d from '../components/Scene3d/Scene3d'
 import Footer from '../components/_UI/Footer'
-import fs from 'fs'
-
-const COLOR_LAPTOP_OPENED = '#e8d197'
-const COLOR_LAPTOP_CLOSED = '#35004b'
-const COLOR_BLINK = '#7000a0'
 
 const Document: NextPage<{ wordsArray: string[] }> = ({ wordsArray }) => {
   const {
     context: { isLaptopOpened, isBlinking },
   } = useContext()
-
-  const wrapperStyle = {
-    backgroundColor: isLaptopOpened ? COLOR_LAPTOP_OPENED : COLOR_LAPTOP_CLOSED,
-    backgroundImage:
-      isBlinking && !isLaptopOpened
-        ? `radial-gradient(farthest-side at 50% 80px,${COLOR_BLINK} 0%, ${COLOR_LAPTOP_CLOSED} 100%)`
-        : '',
-  }
 
   return (
     <div className='h-screen w-screen'>
@@ -57,7 +45,12 @@ const Document: NextPage<{ wordsArray: string[] }> = ({ wordsArray }) => {
         />
       </Head>
 
-      <div className={`w-full h-full`} style={wrapperStyle}>
+      <div
+        className={`w-full h-full
+      ${isLaptopOpened ? 'main-laptop-opened' : 'main-laptop-closed'}
+      ${isBlinking && 'main-laptop-blinking'}
+      `}
+      >
         <Scene2d />
         <Scene3d wordsArray={wordsArray} />
         <Footer />

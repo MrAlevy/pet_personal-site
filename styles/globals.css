@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-color-closed: #35004b;
+  --bg-color-blinked: #7000a0;
+  --bg-color-opened: #e8d197;
+}
+
 @layer utilities {
   .scroll-snap-none {
     scroll-snap-type: none;
@@ -19,4 +25,21 @@
 
 .avatar {
   border-radius: 2px;
+}
+
+.main-laptop-opened {
+  background-color: var(--bg-color-opened);
+}
+
+.main-laptop-closed {
+  background-color: var(--bg-color-closed);
+}
+
+.main-laptop-blinking {
+  background-color: var(--bg-color-blinked);
+  background-image: radial-gradient(
+    farthest-side at 50% 80px,
+    var(--bg-color-blinked) 0%,
+    var(--bg-color-closed) 100%
+  );
 }
