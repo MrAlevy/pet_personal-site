@@ -1,3 +1,4 @@
+import { ResizeObserver } from '@juggle/resize-observer'
 import {
   ContactShadows,
   OrbitControls,
@@ -62,7 +63,11 @@ export default function Scene3d({ wordsArray }: { wordsArray: string[] }) {
   }, [isSkeletonMode, isLaptopOpened])
 
   return (
-    <Canvas dpr={[1, 2]} style={{ position: 'absolute' }}>
+    <Canvas
+      dpr={[1, 2]}
+      resize={{ polyfill: ResizeObserver }}
+      style={{ position: 'absolute' }}
+    >
       <PerspectiveCamera
         makeDefault
         position={[0.5, 0.5, -4 * cameraScaleFactor]}

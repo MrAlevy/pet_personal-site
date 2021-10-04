@@ -64,7 +64,13 @@ const TechnologyCurved = ({
         id='curve'
         fill='transparent'
         d='M 0 0 L 320 0 Q 500 0 530 -180 Q 540 -230 570 -790'
-      />
+      >
+        <animate
+          attributeName='d'
+          values='M 0 0 L 320 0 Q 500 0 530 -180 Q 540 -230 570 -790'
+          calcMode='spline'
+        />
+      </path>
       <text width='500' style={{ fontSize: 67 }}>
         <textPath fill='rgba(249, 250, 251)' xlinkHref='#curve'>
           {name}
