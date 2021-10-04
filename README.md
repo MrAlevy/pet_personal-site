@@ -1,1 +1,7 @@
-This is a source code of the Alexander Vygodchikov personal page.
+## My Personal Site
+
+Next.js site with my contacts and personal info.
+
+Visit: https://alex-vygodchikov.com
+
+Alexander Vygodchikov
