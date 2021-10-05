@@ -170,20 +170,21 @@ export default function AppChrome({
                 {`I am ${dayjs().diff(
                   dayjs('1991-06-22'),
                   'y'
-                )}-years-old. I live in Saint Petersburg, Russia. \n
+                )}-years-old and I currently live in Saint Petersburg, Russia. \n
               `}
                 I really love programming and everything related to it. I am
-                inspired by what I do, whether it is a regular daily routine or
-                pet-projects and experiments. I constantly learn something new,
-                improve my current knowledge, look for the best practices.
+                inspired by what I do, whether it is a regular routine job or
+                pet-projects and experiments. I am constantly learning something
+                new, improving my current knowledge, reviewing the best
+                practices.
               </TextContent>
             </div>
           </div>
 
           <TextContent>
-            For more information about my person, such as what technologies I
-            use or what my experience is, please, visit my LinkedIn profile (you
-            can find the link in the footer below).
+            For more information about me, such as what technologies I use or
+            what experience I have, please, visit my LinkedIn profile (you can
+            find the link in the footer below).
           </TextContent>
         </div>
       </motion.div>
