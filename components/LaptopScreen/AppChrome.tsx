@@ -201,7 +201,7 @@ export default function AppChrome({
       >
         <div style={{ width: 600 }}>
           <TextContent>
-            This project is built on Next.js, entirely in Typescript.
+            This project is built on Next.js, entirely in TypeScript.
             {`\n\n`}
             As a main focus here I used Three.js (three/fiber) with its
             accompanying libraries for the 3D laptop as well as a native 2D HTML
