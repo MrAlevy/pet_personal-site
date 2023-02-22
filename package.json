@@ -11,7 +11,7 @@
     "lint": "next lint"
   },
   "engines": {
-    "node": "=14.0.0"
+    "node": ">=15.0.0 <16.0.0"
   },
   "dependencies": {
     "@juggle/resize-observer": "^3.4.0",
