@@ -170,13 +170,15 @@ export default function AppChrome({
                 {`I am ${dayjs().diff(
                   dayjs('1991-06-22'),
                   'y'
-                )}-years-old and I currently live in Saint Petersburg, Russia. \n
-              `}
-                I really love programming and everything related to it. I am
-                inspired by what I do, whether it is a regular routine job or
-                pet-projects and experiments. I am constantly learning something
-                new, improving my current knowledge, reviewing the best
-                practices.
+                )}-years-old and I currently live in `}
+                <span style={{ textDecoration: 'line-through' }}>
+                  Saint Petersburg, Russia
+                </span>
+                {` Tbilisi, Georgia. \n`}I really love programming and
+                everything related to it. I am inspired by what I do, whether it
+                is a regular routine job or pet-projects and experiments. I am
+                constantly learning something new, improving my current
+                knowledge, reviewing the best practices.
               </TextContent>
             </div>
           </div>
